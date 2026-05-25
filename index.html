@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Missing DVD Bounce</title>
+
+<style>
+    /* sorry this css is kinda chaotic lol */
+
+    html, body{
+        margin:0;
+        padding:0;
+        overflow:hidden;
+        background:black;
+        font-family:Arial, Helvetica, sans-serif;
+    }
+
+    #dvd{
+        position:absolute;
+        left:120px;
+        top:80px;
+
+        font-size:58px;
+        font-weight:bold;
+
+        color:#ff4d6d;
+
+        user-select:none;
+
+        text-shadow:
+            0 0 10px rgba(255,0,90,.8),
+            0 0 25px rgba(255,0,90,.5);
+
+        transform: rotate(-2deg);
+    }
+
+</style>
+</head>
+<body>
+
+<div id="dvd">Missing</div>
+
+<script>
+
+    // this code works ok dont judge it too hard
+
+    const dvd = document.getElementById("dvd");
+
+    let x = 120;
+    let y = 80;
+
+    // speed
+    let dx = 3.2;
+    let dy = 2.7;
+
+    function randomColor(){
+        let colors = [
+            "#ff4d6d",
+            "#00e5ff",
+            "#ffe66d",
+            "#7eff99",
+            "#c77dff",
+            "#ff9f1c"
+        ];
+
+        return colors[Math.floor(Math.random()*colors.length)];
+    }
+
+    function moveThing(){
+
+        x += dx;
+        y += dy;
+
+        let w = dvd.offsetWidth;
+        let h = dvd.offsetHeight;
+
+        // bounce right/left
+        if(x + w >= window.innerWidth || x <= 0){
+            dx *= -1;
+
+            dvd.style.color = randomColor();
+
+            // tiny random rotation cuz why not
+            dvd.style.transform =
+                `rotate(${Math.random()*8-4}deg)`;
+        }
+
+        // bounce top/bottom
+        if(y + h >= window.innerHeight || y <= 0){
+            dy *= -1;
+
+            dvd.style.color = randomColor();
+
+            dvd.style.transform =
+                `rotate(${Math.random()*8-4}deg)`;
+        }
+
+        dvd.style.left = x + "px";
+        dvd.style.top = y + "px";
+
+        requestAnimationFrame(moveThing);
+    }
+
+    moveThing();
+
+</script>
+
+</body>
+</html>

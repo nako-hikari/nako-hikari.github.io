@@ -67,9 +67,9 @@
             left: 0;
             width: 100%;
             height: 64px;
-            background: rgba(14,14,17,.96);
+            background: rgba(14,14,17,.97);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid #251d27;
+            border-bottom: 1px solid #2a2230;
             z-index: 500;
             display: flex;
             justify-content: center;
@@ -90,10 +90,13 @@
             border-radius: var(--radius-md);
             border: 1px solid #433046;
             background: var(--container-bg);
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             cursor: pointer;
+
             transition:
                 border-color var(--transition-fast),
                 background var(--transition-fast),
@@ -102,7 +105,7 @@
 
         .settings-btn:hover {
             border-color: var(--accent-light);
-            background: #1b1620;
+            background: #1a151d;
         }
 
         .settings-btn:active {
@@ -121,12 +124,15 @@
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+
             display: flex;
             align-items: center;
+
             font-size: 1.28rem;
             letter-spacing: .22em;
-            user-select: none;
+
             white-space: nowrap;
+            user-select: none;
         }
 
         .title-bold {
@@ -135,7 +141,7 @@
         }
 
         .title-light {
-            color: var(--accent-light);
+            color: #ffffff;
             font-weight: 300;
             margin-left: 3px;
         }
@@ -143,28 +149,33 @@
         .page-wrapper {
             width: 100%;
             max-width: var(--max-width);
+
             margin: 0 auto;
+
             display: flex;
             flex-direction: column;
             gap: var(--space-xl);
+
             padding: var(--space-2xl) var(--space-lg);
         }
 
         .main-container {
             background: var(--container-bg);
-            border: 1px solid #332638;
+            border: 1px solid #34263a;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-deep);
+
             padding: var(--space-2xl);
+
             display: flex;
             flex-direction: column;
             gap: var(--space-xl);
         }
 
         .intro-text h1 {
+            color: var(--text-bright);
             font-size: 1.55rem;
             line-height: 1.3;
-            color: var(--text-bright);
             font-weight: 600;
             margin-bottom: var(--space-sm);
         }
@@ -182,22 +193,28 @@
 
         .search-box label {
             color: var(--text-bright);
-            font-size: 1.05rem;
             text-transform: uppercase;
             letter-spacing: .5px;
+            font-size: 1.05rem;
             font-family: "Courier New", Courier, monospace;
         }
 
         .search-input {
             width: 100%;
-            border: 1px solid #37293c;
+
             background: var(--input-bg);
             color: var(--text-bright);
-            padding: var(--space-md);
+
+            border: 1px solid #392c40;
             border-radius: var(--radius-md);
+
+            padding: var(--space-md);
+
             outline: none;
+
             font-size: 14px;
             font-family: "Courier New", Courier, monospace;
+
             transition:
                 border-color var(--transition-fast),
                 background var(--transition-fast);
@@ -216,19 +233,23 @@
 
         .grid-card {
             background: var(--box-bg);
-            border: 1px solid #3f2c45;
+
+            border: 1px solid #49344f;
             border-radius: var(--radius-lg);
+
             min-height: 220px;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
 
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
 
             padding: var(--space-xl);
+
+            position: relative;
+            overflow: hidden;
+
+            text-decoration: none;
 
             transition:
                 border-color var(--transition-fast),
@@ -249,37 +270,48 @@
 
         .grid-card h2 {
             color: var(--text-bright);
-            font-size: 1rem;
+
             text-align: center;
+
+            font-size: 1rem;
             line-height: 1.45;
+
             margin-bottom: var(--space-xl);
+
             letter-spacing: .5px;
         }
 
         .cube-viewport {
             width: 84px;
             height: 84px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             perspective: 900px;
         }
 
         .cube-object {
             width: 52px;
             height: 52px;
+
             position: relative;
+
             transform-style: preserve-3d;
-            animation: cubeSpin 2.2s linear infinite;
+
+            animation: cubeSpin 2.1s linear infinite;
         }
 
         .cube-face {
             position: absolute;
+
             width: 52px;
             height: 52px;
 
             background-image: url('assets/images/cmd-texture.png');
             background-size: 300% 100%;
+
             image-rendering: pixelated;
         }
 
@@ -344,7 +376,7 @@
 
             background: var(--container-bg);
 
-            border-right: 1px solid #38293d;
+            border-right: 1px solid #392c40;
 
             z-index: 900;
 
@@ -365,7 +397,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #302736;
+
+            border-bottom: 1px solid #322836;
+
             padding-bottom: var(--space-md);
         }
 
@@ -378,10 +412,14 @@
         .close-btn {
             width: 34px;
             height: 34px;
+
             border-radius: var(--radius-md);
-            border: 1px solid #3b2b40;
+
+            border: 1px solid #453349;
             background: var(--box-bg);
+
             color: var(--text-bright);
+
             cursor: pointer;
             font-size: 18px;
         }
@@ -393,14 +431,13 @@
         }
 
         .side-links a {
-            text-decoration: none;
             color: var(--text-main);
-
-            padding: var(--space-md);
-
-            border-radius: var(--radius-md);
+            text-decoration: none;
 
             border: 1px solid transparent;
+            border-radius: var(--radius-md);
+
+            padding: var(--space-md);
 
             transition:
                 border-color var(--transition-fast),
@@ -409,18 +446,28 @@
         }
 
         .side-links a:hover {
-            border-color: #47334d;
+            border-color: #4c3753;
             background: #16141b;
             color: var(--text-bright);
+        }
+
+        .side-links a:active {
+            transform: scale(.98);
+            background: #1e1924;
+            border-color: var(--accent-light-hover);
         }
 
         .overlay {
             position: fixed;
             inset: 0;
+
             background: rgba(0,0,0,.45);
+
             opacity: 0;
             visibility: hidden;
+
             transition: opacity var(--transition-normal);
+
             z-index: 850;
         }
 
@@ -430,26 +477,30 @@
         }
 
         .footer {
-            margin-top: var(--space-2xl, 32px);
-            padding-bottom: var(--space-lg, 16px);
+            margin-top: var(--space-2xl);
+            padding-bottom: var(--space-lg);
+
             text-align: center;
+
             display: flex;
             flex-direction: column;
-            gap: var(--space-sm, 8px);
+            gap: var(--space-sm);
+
             align-items: center;
+
             width: 100%;
         }
 
         .footer-title {
             font-size: 12px;
-            color: var(--text-muted, #5a5a66);
-            opacity: 0.75;
-            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            opacity: .75;
+            letter-spacing: .5px;
         }
 
         .footer-links {
             display: flex;
-            gap: var(--space-md, 12px);
+            gap: var(--space-md);
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -458,23 +509,31 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            color: var(--accent-light, #A77A99);
+
+            color: var(--accent-light);
+
             text-decoration: none;
+
             font-size: 13px;
-            opacity: 0.85;
-            transition: opacity var(--transition-fast, 0.15s), color var(--transition-fast, 0.15s);
+
+            opacity: .85;
+
+            transition:
+                opacity var(--transition-fast),
+                color var(--transition-fast);
         }
 
         .footer-links a:hover {
-            color: var(--accent-light-hover, #c5a4bc);
+            color: var(--accent-light-hover);
             opacity: 1;
         }
 
         .footer-links img {
             width: 16px;
             height: 16px;
+
             filter: brightness(0) invert(1);
-            opacity: 0.9;
+            opacity: .9;
         }
 
         .footer-links a.kofi {
@@ -491,15 +550,7 @@
             height: 20px;
         }
 
-        @media (max-width: 720px) {
-            .nav-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .grid-card {
-                min-height: 190px;
-            }
-
+        @media (max-width: 600px) {
             .page-wrapper {
                 padding: var(--space-lg) var(--space-sm);
             }
@@ -510,6 +561,7 @@
 <body>
 
     <header class="site-header">
+
         <div class="header-inner">
 
             <button class="settings-btn" id="openSidebar">
@@ -524,6 +576,7 @@
             </div>
 
         </div>
+
     </header>
 
     <div class="overlay" id="sidebarOverlay"></div>
@@ -554,7 +607,7 @@
                 </h1>
 
                 <p>
-                    command tools • resource experiments • utility pages
+                    command tools • utility systems • resource experiments
                 </p>
             </div>
 
@@ -586,22 +639,20 @@
 
                 </a>
 
-                <a href="pages/about.html" class="grid-card">
-                    <div class="placeholder-text">
-                        Project Information<br>
-                        & Resources
-                    </div>
+                <a href="#" class="grid-card">
+                    <div class="placeholder-text">idk</div>
                 </a>
 
             </div>
 
             <div class="sub-text">
-                Additional tools and experimental systems will be added over time.
+                additional systems and tools will be added here later
             </div>
 
         </main>
 
         <div class="footer">
+
             <div class="footer-title">By Nako Hikari</div>
 
             <div class="footer-links">
@@ -627,6 +678,7 @@
                 </a>
 
             </div>
+
         </div>
 
     </div>

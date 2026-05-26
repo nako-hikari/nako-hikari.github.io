@@ -3,111 +3,651 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Nako Hikari</title>
 
-    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        :root {
+            --bg-color: #0e0e11;
+            --container-bg: #18181f;
+            --input-bg: #0f0f12;
+            --box-bg: #0f0f12;
+
+            --accent-dark: #663657;
+            --accent-dark-hover: #81456e;
+
+            --accent-light: #A77A99;
+            --accent-light-hover: #c5a4bc;
+
+            --text-main: #b4b4bc;
+            --text-muted: #5a5a66;
+            --text-bright: #ffffff;
+
+            --border-color: #2d2d38;
+
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 20px;
+            --space-2xl: 24px;
+
+            --max-width: 900px;
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+
+            --border-width: 1px;
+
+            --shadow-deep: 0 6px 16px rgba(0,0,0,.6);
+
+            --transition-fast: .15s cubic-bezier(.4,0,.2,1);
+            --transition-normal: .2s cubic-bezier(.4,0,.2,1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-top: 64px;
+        }
+
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: rgba(14,14,17,.96);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #251d27;
+            z-index: 500;
+            display: flex;
+            justify-content: center;
+            padding: 0 var(--space-lg);
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: var(--max-width);
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .settings-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            border: 1px solid #433046;
+            background: var(--container-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition:
+                border-color var(--transition-fast),
+                background var(--transition-fast),
+                transform var(--transition-fast);
+        }
+
+        .settings-btn:hover {
+            border-color: var(--accent-light);
+            background: #1b1620;
+        }
+
+        .settings-btn:active {
+            transform: scale(.96);
+            background: #1e1924;
+            border-color: var(--accent-light-hover);
+        }
+
+        .settings-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff;
+        }
+
+        .site-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            font-size: 1.28rem;
+            letter-spacing: .22em;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .title-bold {
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        .title-light {
+            color: var(--accent-light);
+            font-weight: 300;
+            margin-left: 3px;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+            padding: var(--space-2xl) var(--space-lg);
+        }
+
+        .main-container {
+            background: var(--container-bg);
+            border: 1px solid #332638;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-deep);
+            padding: var(--space-2xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+        }
+
+        .intro-text h1 {
+            font-size: 1.55rem;
+            line-height: 1.3;
+            color: var(--text-bright);
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .intro-text p {
+            color: var(--text-muted);
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .search-box {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .search-box label {
+            color: var(--text-bright);
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .search-input {
+            width: 100%;
+            border: 1px solid #37293c;
+            background: var(--input-bg);
+            color: var(--text-bright);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            outline: none;
+            font-size: 14px;
+            font-family: "Courier New", Courier, monospace;
+            transition:
+                border-color var(--transition-fast),
+                background var(--transition-fast);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-light);
+            background: #131217;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+        }
+
+        .grid-card {
+            background: var(--box-bg);
+            border: 1px solid #3f2c45;
+            border-radius: var(--radius-lg);
+            min-height: 220px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            padding: var(--space-xl);
+
+            transition:
+                border-color var(--transition-fast),
+                background var(--transition-fast),
+                transform var(--transition-fast);
+        }
+
+        .grid-card:hover {
+            border-color: var(--accent-light);
+            background: #15131a;
+        }
+
+        .grid-card:active {
+            transform: scale(.98);
+            background: #1e1924;
+            border-color: var(--accent-light-hover);
+        }
+
+        .grid-card h2 {
+            color: var(--text-bright);
+            font-size: 1rem;
+            text-align: center;
+            line-height: 1.45;
+            margin-bottom: var(--space-xl);
+            letter-spacing: .5px;
+        }
+
+        .cube-viewport {
+            width: 84px;
+            height: 84px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 900px;
+        }
+
+        .cube-object {
+            width: 52px;
+            height: 52px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: cubeSpin 2.2s linear infinite;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 52px;
+            height: 52px;
+
+            background-image: url('assets/images/cmd-texture.png');
+            background-size: 300% 100%;
+            image-rendering: pixelated;
+        }
+
+        .face-front {
+            transform: rotateY(0deg) translateZ(26px);
+            background-position: 50% 0;
+        }
+
+        .face-back {
+            transform: rotateY(180deg) translateZ(26px);
+            background-position: 50% 0;
+        }
+
+        .face-left {
+            transform: rotateY(-90deg) translateZ(26px);
+            background-position: 50% 0;
+        }
+
+        .face-right {
+            transform: rotateY(90deg) translateZ(26px);
+            background-position: 50% 0;
+        }
+
+        .face-top {
+            transform: rotateX(90deg) translateZ(26px);
+            background-position: 0% 0;
+        }
+
+        .face-bottom {
+            transform: rotateX(-90deg) translateZ(26px);
+            background-position: 100% 0;
+        }
+
+        @keyframes cubeSpin {
+            from {
+                transform: rotateX(-18deg) rotateY(0deg);
+            }
+
+            to {
+                transform: rotateX(-18deg) rotateY(360deg);
+            }
+        }
+
+        .placeholder-text {
+            color: var(--text-bright);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .sub-text {
+            color: var(--text-muted);
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .side-tab {
+            position: fixed;
+            top: 0;
+            left: -280px;
+
+            width: 280px;
+            height: 100%;
+
+            background: var(--container-bg);
+
+            border-right: 1px solid #38293d;
+
+            z-index: 900;
+
+            padding: var(--space-2xl) var(--space-lg);
+
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+
+            transition: left var(--transition-normal);
+        }
+
+        .side-tab.open {
+            left: 0;
+        }
+
+        .side-tab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #302736;
+            padding-bottom: var(--space-md);
+        }
+
+        .side-tab-header h4 {
+            color: var(--text-bright);
+            font-size: 1rem;
+            letter-spacing: .5px;
+        }
+
+        .close-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-md);
+            border: 1px solid #3b2b40;
+            background: var(--box-bg);
+            color: var(--text-bright);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .side-links {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .side-links a {
+            text-decoration: none;
+            color: var(--text-main);
+
+            padding: var(--space-md);
+
+            border-radius: var(--radius-md);
+
+            border: 1px solid transparent;
+
+            transition:
+                border-color var(--transition-fast),
+                background var(--transition-fast),
+                color var(--transition-fast);
+        }
+
+        .side-links a:hover {
+            border-color: #47334d;
+            background: #16141b;
+            color: var(--text-bright);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity var(--transition-normal);
+            z-index: 850;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .footer {
+            margin-top: var(--space-2xl, 32px);
+            padding-bottom: var(--space-lg, 16px);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm, 8px);
+            align-items: center;
+            width: 100%;
+        }
+
+        .footer-title {
+            font-size: 12px;
+            color: var(--text-muted, #5a5a66);
+            opacity: 0.75;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: var(--space-md, 12px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent-light, #A77A99);
+            text-decoration: none;
+            font-size: 13px;
+            opacity: 0.85;
+            transition: opacity var(--transition-fast, 0.15s), color var(--transition-fast, 0.15s);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-light-hover, #c5a4bc);
+            opacity: 1;
+        }
+
+        .footer-links img {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+
+        .footer-links a.kofi {
+            color: #ff5fa2;
+            font-weight: 500;
+        }
+
+        .footer-links a.kofi:hover {
+            color: #ff8fc0;
+        }
+
+        .footer-links a.kofi img {
+            width: 20px;
+            height: 20px;
+        }
+
+        @media (max-width: 720px) {
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-card {
+                min-height: 190px;
+            }
+
+            .page-wrapper {
+                padding: var(--space-lg) var(--space-sm);
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<main>
-
     <header class="site-header">
-        <div class="site-title-wrap">
-            <h1 class="site-title">
-                <span class="pixel-title">Nako</span> Hikari
-            </h1>
+        <div class="header-inner">
 
-            <div class="site-subtitle">
-                Minecraft Bedrock command creations
+            <button class="settings-btn" id="openSidebar">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+            </button>
+
+            <div class="site-title">
+                <span class="title-bold">NAKO</span>
+                <span class="title-light">HIKARI</span>
             </div>
+
         </div>
-
-        <a href="/pages/about.html" class="menu-btn">
-            <div class="menu-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </a>
     </header>
 
-    <section class="card-grid">
+    <div class="overlay" id="sidebarOverlay"></div>
 
-        <a href="/pages/commands.html" class="card big-card">
+    <nav class="side-tab" id="leftSidebar">
 
-            <div class="card-top">
-                <div class="cube-scene">
+        <div class="side-tab-header">
+            <h4>SETTINGS</h4>
+            <button class="close-btn" id="closeSidebar">×</button>
+        </div>
 
-                    <div class="cube">
+        <div class="side-links">
+            <a href="pages/about.html">About</a>
+            <a href="pages/supporters.html">Supporters</a>
+            <a href="pages/credits.html">Credits</a>
+        </div>
 
-                        <div class="face top"></div>
-                        <div class="face bottom"></div>
+    </nav>
 
-                        <div class="face front"></div>
-                        <div class="face back"></div>
+    <div class="page-wrapper">
 
-                        <div class="face left"></div>
-                        <div class="face right"></div>
+        <main class="main-container">
+
+            <div class="intro-text">
+                <h1>
+                    Minecraft utilities, command systems,<br>
+                    and experimental Bedrock projects.
+                </h1>
+
+                <p>
+                    command tools • resource experiments • utility pages
+                </p>
+            </div>
+
+            <div class="search-box">
+                <label for="search">search</label>
+                <input type="text" id="search" class="search-input">
+            </div>
+
+            <div class="nav-grid">
+
+                <a href="pages/commands.html" class="grid-card">
+
+                    <h2>COMMAND BLOCK CREATION</h2>
+
+                    <div class="cube-viewport">
+
+                        <div class="cube-object">
+
+                            <div class="cube-face face-front"></div>
+                            <div class="cube-face face-back"></div>
+                            <div class="cube-face face-left"></div>
+                            <div class="cube-face face-right"></div>
+                            <div class="cube-face face-top"></div>
+                            <div class="cube-face face-bottom"></div>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </a>
+
+                <a href="pages/about.html" class="grid-card">
+                    <div class="placeholder-text">
+                        Project Information<br>
+                        & Resources
+                    </div>
+                </a>
+
             </div>
 
-            <div class="card-content">
-                <h2 class="card-title">Command Creations</h2>
-
-                <div class="card-desc">
-                    Explore Minecraft Bedrock command projects and visual systems.
-                </div>
+            <div class="sub-text">
+                Additional tools and experimental systems will be added over time.
             </div>
 
-        </a>
+        </main>
 
-        <div class="card big-card">
+        <div class="footer">
+            <div class="footer-title">By Nako Hikari</div>
 
-            <div class="card-content">
-                <h2 class="card-title">Random Pick</h2>
+            <div class="footer-links">
 
-                <div class="card-desc">
-                    Daily featured creation system coming later.
-                </div>
+                <a href="https://github.com/nako-hikari/" target="_blank" class="social">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub">
+                    GitHub
+                </a>
+
+                <a href="https://m.youtube.com/@NaCryst" target="_blank" class="social">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube">
+                    YouTube
+                </a>
+
+                <a href="https://www.tiktok.com/@nako_hikari_mc" target="_blank" class="social">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok">
+                    TikTok
+                </a>
+
+                <a href="https://ko-fi.com/arialicee" target="_blank" class="social kofi">
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/assets/kofi-icon.png" alt="Ko-fi">
+                    Support me on Ko-fi
+                </a>
+
             </div>
-
         </div>
 
-    </section>
-
-    <div class="footer">
-        <div class="footer-title">By Nako Hikari</div>
-
-        <div class="footer-links">
-
-            <a href="https://github.com/nako-hikari/" target="_blank" class="social">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub">
-                GitHub
-            </a>
-
-            <a href="https://m.youtube.com/@NaCryst" target="_blank" class="social">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube">
-                YouTube
-            </a>
-
-            <a href="https://www.tiktok.com/@nako_hikari_mc" target="_blank" class="social">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok">
-                TikTok
-            </a>
-
-            <a href="https://ko-fi.com/arialicee" target="_blank" class="social kofi">
-                <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/assets/kofi-icon.png" alt="Ko-fi">
-                Support me on Ko-fi
-            </a>
-
-        </div>
     </div>
 
-</main>
+    <script>
+        const sidebar = document.getElementById('leftSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        document.getElementById('openSidebar').onclick = () => {
+            sidebar.classList.add('open');
+            overlay.classList.add('visible');
+        };
+
+        document.getElementById('closeSidebar').onclick = closeSidebar;
+        overlay.onclick = closeSidebar;
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('visible');
+        }
+    </script>
 
 </body>
 </html>

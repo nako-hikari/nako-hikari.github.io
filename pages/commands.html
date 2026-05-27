@@ -1,407 +1,618 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Command Viewer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Block Creation</title>
+    <style>
+        :root {
+            --bg-color: #0e0e11;
+            --container-bg: #18181f;
+            --input-bg: #0f0f12;
+            --box-bg: #0f0f12;
+            --accent-dark: #663657;
+            --accent-dark-hover: #81456e;
+            --accent-light: #A77A99;
+            --accent-light-hover: #c5a4bc;
+            --text-main: #b4b4bc;
+            --text-muted: #5a5a66;
+            --text-bright: #ffffff;
+            --border-color: #2d2d38;
 
-<style>
-:root {
-    --bg-color: #0e0e11;
-    --container-bg: #18181f;
-    --input-bg: #0f0f12;
-    --box-bg: #0f0f12;
+            --mc-impulse: #d47c34;
+            --mc-repeat: #7b4282;
+            --mc-chain: #2b8c83;
 
-    --accent-dark: #663657;
-    --accent-dark-hover: #81456e;
-    --accent-light: #A77A99;
-    --accent-light-hover: #c5a4bc;
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 20px;
+            --space-2xl: 24px;
+            --max-width: 950px;
 
-    --text-main: #b4b4bc;
-    --text-muted: #5a5a66;
-    --text-bright: #ffffff;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --border-width: 1px;
+            --shadow-deep: 0 6px 16px rgba(0, 0, 0, 0.6);
+            --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.3);
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    --border-color: #2d2d38;
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
 
-    --space-sm: 8px;
-    --space-md: 12px;
-    --space-lg: 16px;
-    --space-xl: 20px;
-    --space-2xl: 24px;
+        body {
+            background: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+            padding: var(--space-2xl) var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    --radius-md: 6px;
-    --radius-lg: 8px;
+        @media (max-width: 600px) {
+            body { padding: var(--space-lg) var(--space-sm); }
+        }
 
-    --shadow-deep: 0 6px 16px rgba(0,0,0,.6);
-    --transition-fast: 0.15s cubic-bezier(.4,0,.2,1);
-}
+        .wrapper {
+            width: 100%;
+            max-width: var(--max-width);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    -webkit-tap-highlight-color: transparent;
-}
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-body{
-    background:var(--bg-color);
-    color:var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    padding: var(--space-lg);
-    display:flex;
-    justify-content:center;
-}
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin: 0;
+        }
 
-.wrapper{
-    width:100%;
-    max-width:900px;
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-lg);
-}
+        .search-container {
+            width: 100%;
+            position: relative;
+        }
 
-/* TOP INPUT */
-.editor{
-    background:var(--container-bg);
-    border:1px solid var(--border-color);
-    border-radius:var(--radius-lg);
-    padding:var(--space-lg);
-    box-shadow:var(--shadow-deep);
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-md);
-}
+        .search-box {
+            width: 100%;
+            background: var(--container-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md) var(--space-lg);
+            color: var(--text-bright);
+            font-size: 14px;
+            box-shadow: var(--shadow-soft);
+            outline: none;
+            transition: var(--transition-fast);
+        }
 
-textarea{
-    width:100%;
-    min-height:140px;
-    resize:none;
-    background:var(--input-bg);
-    border:1px solid var(--border-color);
-    border-radius:var(--radius-md);
-    color:var(--text-bright);
-    padding:var(--space-md);
-    font-family: "Courier New", monospace;
-    outline:none;
-}
+        .search-box:focus {
+            border-color: var(--accent-light);
+        }
 
-button{
-    background:var(--accent-dark);
-    color:white;
-    border:none;
-    padding:10px 12px;
-    border-radius:var(--radius-md);
-    cursor:pointer;
-    transition:var(--transition-fast);
-    text-transform:uppercase;
-    font-size:12px;
-}
+        /* Dashboard Listing Grid Layout */
+        .creation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-md);
+        }
 
-button:hover{
-    background:var(--accent-dark-hover);
-}
+        .creation-card {
+            background: var(--container-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            box-shadow: var(--shadow-soft);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
 
-/* OUTPUT */
-.viewer{
-    display:flex;
-    flex-direction:column;
-    gap:var(--space-md);
-}
+        .creation-card:hover {
+            border-color: var(--accent-light);
+            transform: translateY(-2px);
+        }
 
-.block{
-    background:var(--container-bg);
-    border:1px solid var(--border-color);
-    border-radius:var(--radius-lg);
-    padding:var(--space-md);
-    box-shadow:var(--shadow-deep);
-}
+        .card-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--text-bright);
+        }
 
-.h{
-    font-weight:700;
-    color:var(--text-bright);
-    text-transform:uppercase;
-    font-size:14px;
-}
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-main);
+            flex: 1;
+        }
 
-.sh{
-    color:var(--text-main);
-    font-size:13px;
-}
+        /* Reader Canvas Custom Styling Layouts */
+        .viewer-card {
+            background: var(--container-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            box-shadow: var(--shadow-deep);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
 
-.note{
-    color:var(--text-muted);
-    font-style:italic;
-}
+        .render-title { font-size: 1.6rem; color: var(--text-bright); font-weight: bold; margin: 0; }
+        .render-desc { font-size: 14px; color: var(--text-main); margin: 0; }
+        
+        .tag-pill-container { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+        .tag-pill {
+            background: var(--box-bg);
+            border: var(--border-width) solid var(--border-color);
+            color: var(--accent-light);
+            padding: 2px var(--space-sm);
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+        }
+        .tag-flip-pill { background: #4a2323; border-color: #6e3333; color: #ff8fc0; }
 
-/* COMMAND BLOCK */
-.cmd-group{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
+        .view-h1 { font-size: 1.5rem; color: var(--text-bright); border-bottom: 2px solid var(--border-color); padding-bottom: 4px; margin-top: var(--space-md); font-weight: 600; }
+        .view-h2 { font-size: 1.3rem; color: var(--text-bright); margin-top: var(--space-md); font-weight: 600; }
+        .view-h3 { font-size: 1.1rem; color: var(--text-bright); margin-top: var(--space-md); font-weight: 600; }
+        .view-h4 { font-size: 1.0rem; color: var(--text-bright); margin-top: var(--space-md); font-weight: 600; }
+        .view-h5 { font-size: 0.9rem; color: var(--text-main); margin-top: var(--space-md); text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+        
+        .view-text { font-size: 14px; color: var(--text-main); line-height: 1.6; margin: 0; }
+        .view-note { font-style: italic; color: var(--text-muted); padding-left: var(--space-sm); border-left: 2px solid var(--text-muted); margin: 0; }
 
-.cmd-row{
-    display:flex;
-    align-items:stretch;
-    gap:8px;
-}
+        /* Synchronized Command Block Chain Layout */
+        .connected-chain-group {
+            display: flex;
+            flex-direction: column;
+            background: var(--input-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
 
-.cmd-num{
-    width:28px;
-    text-align:center;
-    font-family:monospace;
-    color:var(--accent-light);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
+        .view-cmd-row {
+            display: flex;
+            align-items: center;
+            padding: var(--space-xs);
+            gap: 6px;
+            border-bottom: var(--border-width) solid var(--border-color);
+            position: relative;
+        }
+        .connected-chain-group .view-cmd-row:last-child { border-bottom: none; }
 
-.cmd-icon{
-    width:32px;
-    height:32px;
-    background-image:url("assets/images/cmd-texture.png");
-    background-size:300% 100%;
-    background-position:50% 0;
-    border:1px solid var(--border-color);
-    border-radius:4px;
-    flex-shrink:0;
-}
+        .view-cmd-row.color-i { background-color: rgba(212, 124, 52, 0.08); border-left: 4px solid var(--mc-impulse); }
+        .view-cmd-row.color-r { background-color: rgba(123, 66, 130, 0.08); border-left: 4px solid var(--mc-repeat); }
+        .view-cmd-row.color-c { background-color: rgba(43, 140, 131, 0.08); border-left: 4px solid var(--mc-chain); }
+        .view-cmd-row.cond-border { box-shadow: inset 0 0 0 1px #ffffff; }
 
-.cmd-text{
-    flex:1;
-    overflow-x:auto;
-    white-space:nowrap;
-    background:var(--input-bg);
-    border:1px solid var(--border-color);
-    border-radius:var(--radius-md);
-    padding:6px 8px;
-    font-family:monospace;
-    cursor:pointer;
-}
+        .view-row-idx { font-family: monospace; font-weight: bold; width: 18px; text-align: center; color: var(--text-muted); font-size: 11px; }
+        .meta-badge-stack { display: flex; gap: 4px; flex-shrink: 0; user-select: none; }
+        
+        .meta-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px var(--space-xs);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            min-width: 26px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.cmd-text.expanded{
-    white-space:normal;
-}
+        .badge-type-i { background: var(--mc-impulse); color: #fff; }
+        .badge-type-r { background: var(--mc-repeat); color: #fff; }
+        .badge-type-c { background: var(--mc-chain); color: #fff; }
+        .badge-cond-un { background: #3c3c4a; color: var(--text-main); }
+        .badge-cond-cn { background: #ffffff; color: #000; font-weight: 900; }
+        .badge-active-aa { background: #2a4f32; color: #7cfc00; border: 1px solid #3b6e47; }
+        .badge-active-nr { background: #4a2323; color: #ff6b6b; border: 1px solid #6e3333; }
+        .badge-tick { background: var(--box-bg); border: var(--border-width) solid var(--border-color); color: var(--text-bright); font-family: monospace; min-width: 28px; }
 
-.copy{
-    background:transparent;
-    border:1px solid var(--border-color);
-    padding:0 8px;
-    font-size:11px;
-}
+        .view-cmd-payload-box {
+            flex: 1;
+            font-family: "Courier New", Courier, monospace;
+            background: var(--bg-color);
+            border: var(--border-width) solid var(--border-color);
+            color: #e5c07b;
+            padding: 4px var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            white-space: nowrap;
+            overflow-x: auto;
+            cursor: pointer;
+            height: 28px;
+            display: flex;
+            align-items: center;
+        }
+        .view-cmd-payload-box:hover { border-color: var(--accent-light); color: var(--text-bright); }
 
-/* flip mode */
-.flipped .cmd-group{
-    flex-direction:column-reverse;
-}
+        /* Structure Module Download Deck Component */
+        .structure-deck-panel {
+            background: var(--input-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-md);
+            margin-top: var(--space-md);
+        }
 
-.flipped .cmd-icon{
-    transform:none;
-    filter:brightness(1.1);
-}
+        .structure-preview-meta { display: flex; align-items: center; gap: var(--space-md); }
+        .structure-img-frame {
+            width: 50px;
+            height: 50px;
+            background: var(--box-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-md);
+            object-fit: cover;
+        }
 
-/* FOOTER */
-.footer{
-    margin-top:30px;
-    text-align:center;
-    font-size:12px;
-    color:var(--text-muted);
-}
+        .structure-label-title { font-weight: bold; color: var(--text-bright); font-size: 14px; }
+        .structure-label-sub { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* STRUCTURE */
-.structure-bar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px;
-    border:1px solid var(--border-color);
-    border-radius:var(--radius-lg);
-    background:var(--container-bg);
-}
+        .btn {
+            background: var(--accent-dark);
+            border: none;
+            color: var(--text-bright);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            transition: var(--transition-fast);
+        }
+        .btn:hover { background: var(--accent-dark-hover); }
+        .btn-secondary { background: var(--box-bg); border: var(--border-width) solid var(--border-color); color: var(--text-main); }
+        .btn-secondary:hover { border-color: var(--accent-light); color: var(--text-bright); }
 
-.structure-left{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.structure-left img{
-    width:22px;
-    height:22px;
-}
-</style>
+        .footer {
+            margin-top: var(--space-2xl, 32px);
+            padding-bottom: var(--space-lg, 16px);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm, 8px);
+            align-items: center;
+            width: 100%;
+        }
+        .footer-title { font-size: 12px; color: var(--text-muted); opacity: 0.75; letter-spacing: 0.5px; }
+        .footer-links { display: flex; gap: var(--space-md); flex-wrap: wrap; justify-content: center; }
+        .footer-links a { display: flex; align-items: center; gap: 6px; color: var(--accent-light); text-decoration: none; font-size: 13px; opacity: 0.85; transition: opacity var(--transition-fast), color var(--transition-fast); }
+        .footer-links a:hover { color: var(--accent-light-hover); opacity: 1; }
+        .footer-links img { width: 16px; height: 16px; filter: brightness(0) invert(1); opacity: 0.9; }
+        .footer-links a.kofi { color: #ff5fa2; font-weight: 500; }
+        .footer-links a.kofi:hover { color: #ff8fc0; }
+        .footer-links a.kofi img { width: 20px; height: 20px; filter: brightness(0) invert(1); opacity: 0.95; }
+    </style>
 </head>
-
 <body>
 
-<div class="wrapper">
+    <div class="wrapper">
+        <header>
+            <h1 id="app-display-header" style="cursor:pointer;" onclick="routeReturnHomeDashboard()">Command Block Creation</h1>
+            <button id="nav-back-home-btn" class="btn btn-secondary" style="display: none;" onclick="routeReturnHomeDashboard()">← Back</button>
+        </header>
 
-    <div class="editor">
-        <textarea id="input">
-# Header Example
-## Sub header example
-! note this is a note
-cmd: say hello
-cmd: give @p stone
-cmd: flip
-cmd: tp @p 0 64 0
-        </textarea>
-        <button onclick="parse()">Render</button>
-    </div>
+        <main id="app-view-router-canvas">
+            </main>
 
-    <div id="viewer" class="viewer"></div>
-
-    <div class="structure-bar" id="structureBar" style="display:none;">
-        <div class="structure-left">
-            <img id="structureIcon" src="assets/images/structure-un.png"/>
-            <div id="structureName">no structure</div>
+        <div class="footer">
+            <div class="footer-title">By Nako Hikari</div>
+            <div class="footer-links">
+                <a href="https://github.com/nako-hikari/" target="_blank">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub"> GitHub
+                </a>
+                <a href="https://m.youtube.com/@NaCryst" target="_blank">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"> YouTube
+                </a>
+                <a href="https://www.tiktok.com/@nako_hikari_mc" target="_blank">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok"> TikTok
+                </a>
+                <a href="https://ko-fi.com/arialicee" target="_blank" class="social kofi">
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/assets/kofi-icon.png" alt="Ko-fi"> Support me on Ko-fi
+                </a>
+            </div>
         </div>
-        <button onclick="downloadStructure()">download</button>
     </div>
 
-    <div class="footer">by nako hikari</div>
+    <script>
+        // Central Repository File Tracking Database System Index Array 
+        // Simply list files dropped inside your repository's /commands/ folder path down below
+        const COMMAND_CREATIONS_REGISTRY = [
+            { file: "reactive_aura.txt", defaultTitle: "Reactive Aura" },
+            { file: "spin_attack.txt", defaultTitle: "Spin Attack Effect" },
+            { file: "custom_lightning.txt", defaultTitle: "Custom Lightning Bolt" }
+        ];
 
-</div>
+        let cachedParsedIndexDataset = [];
 
-<script>
-let viewer = document.getElementById("viewer");
+        window.addEventListener('DOMContentLoaded', initializeApplicationRuntimePipeline);
+        window.addEventListener('hashchange', readLocationHashRouteToken);
 
-function parse(){
-    const lines = document.getElementById("input").value.split("\n");
+        async function initializeApplicationRuntimePipeline() {
+            const fetchPromises = COMMAND_CREATIONS_REGISTRY.map(async (item) => {
+                try {
+                    const response = await fetch(`commands/${item.file}`);
+                    if (!response.ok) throw new Error("Network response error status");
+                    const data = await response.text();
+                    
+                    // Run a shallow parse to extract metadata for search/grid displays
+                    let title = item.defaultTitle;
+                    let desc = "No descriptor statement declared in source file.";
+                    let tags = [];
 
-    viewer.innerHTML = "";
+                    const segments = data.split('\n\n');
+                    if (segments[0]) {
+                        segments[0].split('\n').forEach(line => {
+                            if (line.startsWith('TITLE:')) title = line.replace('TITLE:', '').trim();
+                            if (line.startsWith('DESC:')) desc = line.replace('DESC:', '').trim();
+                            if (line.startsWith('TAG:')) tags = line.replace('TAG:', '').split(',').map(t => t.trim());
+                        });
+                    }
 
-    let cmdGroup = null;
-    let cmdCount = 0;
-    let flipped = false;
+                    return { ...item, parsedTitle: title, parsedDesc: desc, parsedTags: tags, rawPayload: data };
+                } catch (err) {
+                    return { ...item, parsedTitle: item.defaultTitle, parsedDesc: "Failed to download text profile asset.", parsedTags: [], rawPayload: null };
+                }
+            });
 
-    lines.forEach(line=>{
-        line = line.trim();
-        if(!line) return;
-
-        if(line.startsWith("# ")){
-            addBlock("h", line.replace("# ",""));
-            return;
+            cachedParsedIndexDataset = await Promise.all(fetchPromises);
+            readLocationHashRouteToken();
         }
 
-        if(line.startsWith("## ")){
-            addBlock("sh", line.replace("## ",""));
-            return;
+        function readLocationHashRouteToken() {
+            const currentHash = decodeURIComponent(window.location.hash.replace('#', '')).trim();
+            
+            if (currentHash) {
+                const searchMatch = cachedParsedIndexDataset.find(c => 
+                    c.parsedTitle.toLowerCase() === currentHash.toLowerCase() || 
+                    c.file.toLowerCase() === currentHash.toLowerCase()
+                );
+                if (searchMatch && searchMatch.rawPayload) {
+                    renderFocusedCreationDisplayPage(searchMatch);
+                    return;
+                }
+            }
+            renderGlobalDashboardHomeGrid();
         }
 
-        if(line.startsWith("!")){
-            addBlock("note", line.replace("! ",""));
-            return;
+        function renderGlobalDashboardHomeGrid() {
+            document.getElementById('nav-back-home-btn').style.display = 'none';
+            const routerCanvas = document.getElementById('app-view-router-canvas');
+            
+            routerCanvas.innerHTML = `
+                <div class="search-container">
+                    <input type="text" id="live-filter-search" class="search-box" placeholder="Search creations by title or tag keywords..." oninput="handleSearchFilteringEngine(this.value)">
+                </div>
+                <div class="creation-grid" id="dashboard-cards-container"></div>
+            `;
+
+            injectFilteredCardsIntoDashboard(cachedParsedIndexDataset);
         }
 
-        if(line.startsWith("cmd:")){
-            let content = line.replace("cmd:","").trim();
+        function injectFilteredCardsIntoDashboard(dataset) {
+            const gridContainer = document.getElementById('dashboard-cards-container');
+            if (!gridContainer) return;
+            gridContainer.innerHTML = '';
 
-            if(content === "flip"){
-                flipped = !flipped;
+            dataset.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'creation-card';
+                card.onclick = () => { window.location.hash = encodeURIComponent(item.parsedTitle); };
+
+                let tagPillsStr = item.parsedTags.map(t => `<span class="tag-pill">${t}</span>`).join(' ');
+
+                card.innerHTML = `
+                    <div class="card-title">${escapeHtmlEntities(item.parsedTitle)}</div>
+                    <div class="card-desc">${escapeHtmlEntities(item.parsedDesc)}</div>
+                    <div class="tag-pill-container" style="margin-top: var(--space-xs);">${tagPillsStr}</div>
+                `;
+                gridContainer.appendChild(card);
+            });
+
+            if (dataset.length === 0) {
+                gridContainer.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: var(--space-xl);">No creations match your search parameters.</div>`;
+            }
+        }
+
+        function handleSearchFilteringEngine(searchQuery) {
+            const query = searchQuery.toLowerCase().trim();
+            if (!query) {
+                injectFilteredCardsIntoDashboard(cachedParsedIndexDataset);
                 return;
             }
 
-            if(!cmdGroup){
-                cmdGroup = document.createElement("div");
-                cmdGroup.className = "cmd-group";
-                viewer.appendChild(cmdGroup);
-                cmdCount = 0;
-            }
+            const filtered = cachedParsedIndexDataset.filter(item => {
+                const matchTitle = item.parsedTitle.toLowerCase().includes(query);
+                const matchDesc = item.parsedDesc.toLowerCase().includes(query);
+                const matchTags = item.parsedTags.some(t => t.toLowerCase().includes(query));
+                return matchTitle || matchDesc || matchTags;
+            });
 
-            cmdCount++;
-
-            const row = document.createElement("div");
-            row.className = "cmd-row";
-
-            const num = document.createElement("div");
-            num.className = "cmd-num";
-            num.textContent = cmdCount;
-
-            const icon = document.createElement("div");
-            icon.className = "cmd-icon";
-
-            const text = document.createElement("div");
-            text.className = "cmd-text";
-            text.textContent = content;
-
-            text.onclick = ()=>{
-                text.classList.toggle("expanded");
-            };
-
-            const copy = document.createElement("button");
-            copy.className = "copy";
-            copy.textContent = "copy";
-            copy.onclick = ()=>{
-                navigator.clipboard.writeText(content);
-            };
-
-            row.appendChild(num);
-            row.appendChild(icon);
-            row.appendChild(text);
-            row.appendChild(copy);
-
-            cmdGroup.appendChild(row);
-            return;
+            injectFilteredCardsIntoDashboard(filtered);
         }
 
-        function addBlock(type, text){
-            const div = document.createElement("div");
-            div.className = "block " + type;
-            div.textContent = text;
-            viewer.appendChild(div);
-        }
-    });
+        function renderFocusedCreationDisplayPage(creationObject) {
+            document.getElementById('nav-back-home-btn').style.display = 'block';
+            const canvas = document.getElementById('app-view-router-canvas');
+            canvas.innerHTML = ''; 
 
-    if(flipped){
-        viewer.classList.add("flipped");
-    } else {
-        viewer.classList.remove("flipped");
-    }
+            const container = document.createElement('div');
+            container.className = 'viewer-card';
 
-    updateStructure();
-}
+            let headerMetaContainer = document.createElement('div');
+            headerMetaContainer.style.cssText = 'display: flex; flex-direction: column; gap: 4px;';
 
-/* STRUCTURE DETECT */
-function updateStructure(){
-    let raw = document.getElementById("input").value;
-    let match = raw.match(/structure:\s*(\w+)/i);
+            let tagsContainer = document.createElement('div');
+            tagsContainer.className = 'tag-pill-container';
+            
+            let elementsWrapper = document.createElement('div');
+            elementsWrapper.style.cssText = 'display: flex; flex-direction: column; gap: 12px;';
 
-    let bar = document.getElementById("structureBar");
-    let img = document.getElementById("structureIcon");
-    let name = document.getElementById("structureName");
+            let activeChainStackElement = null;
+            let currentChainRowIndex = 0;
 
-    if(match){
-        let file = match[1];
+            const segments = creationObject.rawPayload.split('\n\n');
 
-        fetch("structures/"+file+".txt")
-        .then(r=>{
-            if(r.ok){
-                img.src = "assets/images/structure.png";
-            } else {
-                img.src = "assets/images/structure-un.png";
+            segments.forEach(seg => {
+                const lines = seg.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                if (lines.length === 0) return;
+
+                const baseLine = lines[0];
+
+                if (baseLine.startsWith('TITLE:')) {
+                    let titleEl = document.createElement('div');
+                    titleEl.className = 'render-title';
+                    titleEl.innerText = baseLine.replace('TITLE:', '').trim();
+                    headerMetaContainer.appendChild(titleEl);
+                } 
+                else if (baseLine.startsWith('DESC:')) {
+                    let descEl = document.createElement('div');
+                    descEl.className = 'render-desc';
+                    descEl.innerText = baseLine.replace('DESC:', '').trim();
+                    headerMetaContainer.appendChild(descEl);
+                } 
+                else if (baseLine.startsWith('TAG:')) {
+                    const tagString = baseLine.replace('TAG:', '').trim();
+                    tagString.split(',').forEach(t => {
+                        let pill = document.createElement('span');
+                        pill.className = 'tag-pill';
+                        if (t.trim().toLowerCase() === 'flip') pill.classList.add('tag-flip-pill');
+                        pill.innerText = t.trim();
+                        tagsContainer.appendChild(pill);
+                    });
+                }
+                else if (/^H[1-5]:/.test(baseLine)) {
+                    activeChainStackElement = null;
+                    const tier = baseLine.match(/^H[1-5]/)[0].toLowerCase();
+                    let headerEl = document.createElement('div');
+                    headerEl.className = `view-${tier}`;
+                    headerEl.innerText = baseLine.replace(/^H[1-5]:/, '').trim();
+                    elementsWrapper.appendChild(headerEl);
+                }
+                else if (baseLine.startsWith('TEXT:')) {
+                    activeChainStackElement = null;
+                    let textEl = document.createElement('p');
+                    textEl.className = 'view-text';
+                    textEl.innerText = baseLine.replace('TEXT:', '').trim();
+                    elementsWrapper.appendChild(textEl);
+                }
+                else if (baseLine.startsWith('NOTE:')) {
+                    activeChainStackElement = null;
+                    let noteEl = document.createElement('p');
+                    noteEl.className = 'view-note';
+                    noteEl.innerText = baseLine.replace('NOTE:', '').trim();
+                    elementsWrapper.appendChild(noteEl);
+                }
+                else if (baseLine.startsWith('CMD:')) {
+                    if (!activeChainStackElement) {
+                        activeChainStackElement = document.createElement('div');
+                        activeChainStackElement.className = 'connected-chain-group';
+                        elementsWrapper.appendChild(activeChainStackElement);
+                        currentChainRowIndex = 0;
+                    }
+
+                    for (let i = 0; i < lines.length; i += 2) {
+                        if (!lines[i] || !lines[i].startsWith('CMD:')) continue;
+                        
+                        currentChainRowIndex++;
+                        const metaTokens = lines[i].split(':');
+                        const commandStringPayload = lines[i+1] || '';
+
+                        const modeToken = (metaTokens[1] || 'C').toUpperCase();
+                        const activeToken = (metaTokens[2] || 'AA').toUpperCase();
+                        const condToken = (metaTokens[3] || 'U').toUpperCase();
+                        const tickToken = metaTokens[4] || '0';
+
+                        let rowNode = document.createElement('div');
+                        rowNode.className = `view-cmd-row color-${modeToken.toLowerCase()}`;
+                        if (condToken.startsWith('C')) rowNode.classList.add('cond-border');
+
+                        rowNode.innerHTML = `
+                            <div class="view-row-idx">${currentChainRowIndex}</div>
+                            <div class="meta-badge-stack">
+                                <span class="meta-badge badge-type-${modeToken.toLowerCase()}">${modeToken}</span>
+                                <span class="meta-badge ${condToken.startsWith('C') ? 'badge-cond-cn' : 'badge-cond-un'}">${condToken.startsWith('C') ? 'CN' : 'UN'}</span>
+                                <span class="meta-badge ${activeToken === 'AA' ? 'badge-active-aa' : 'badge-active-nr'}">${activeToken}</span>
+                                <span class="meta-badge badge-tick">${tickToken}</span>
+                            </div>
+                            <div class="view-cmd-payload-box" onclick="copyIndividualLineText(this)">${escapeHtmlEntities(commandStringPayload)}</div>
+                        `;
+                        activeChainStackElement.appendChild(rowNode);
+                    }
+                }
+            });
+
+            if (headerMetaContainer.children.length > 0) container.appendChild(headerMetaContainer);
+            if (tagsContainer.children.length > 0) container.appendChild(tagsContainer);
+            if (headerMetaContainer.children.length > 0 || tagsContainer.children.length > 0) {
+                let ruleSpacer = document.createElement('hr');
+                ruleSpacer.style.cssText = 'border: none; border-bottom: 1px solid var(--border-color); margin: 0;';
+                container.appendChild(ruleSpacer);
             }
-        })
-        .catch(()=>{
-            img.src = "assets/images/structure-un.png";
-        });
 
-        name.textContent = file;
-        bar.style.display = "flex";
-    } else {
-        bar.style.display = "none";
-    }
-}
+            container.appendChild(elementsWrapper);
 
-function downloadStructure(){
-    let raw = document.getElementById("input").value;
-    let match = raw.match(/structure:\s*(\w+)/i);
-    if(!match) return;
+            // Structure Dynamic Asset Allocation Download Footing Deck Bar 
+            const pureBaseName = creationObject.file.substring(0, creationObject.file.lastIndexOf('.'));
+            const downloadStructureUrl = `structures/${pureBaseName}.mcstructure`;
 
-    let file = match[1];
-    window.open("structures/"+file+".txt","_blank");
-}
-</script>
+            let structureDeck = document.createElement('div');
+            structureDeck.className = 'structure-deck-panel';
+            structureDeck.innerHTML = `
+                <div class="structure-preview-meta">
+                    <img src="assets/images/structure.png" class="structure-img-frame" alt="Structure Thumbnail Preview" onerror="this.style.display='none'">
+                    <div>
+                        <div class="structure-label-title">${escapeHtmlEntities(pureBaseName)}.mcstructure</div>
+                        <div class="structure-label-sub">In-Game Spatial Block Model Data</div>
+                    </div>
+                </div>
+                <button class="btn" onclick="window.location.href='${downloadStructureUrl}'">Download</button>
+            `;
+            
+            container.appendChild(structureDeck);
+            canvas.appendChild(container);
+        }
 
+        function routeReturnHomeDashboard() {
+            window.location.hash = '';
+            renderGlobalDashboardHomeGrid();
+        }
+
+        function copyIndividualLineText(boxElement) {
+            navigator.clipboard.writeText(boxElement.innerText);
+            boxElement.style.color = '#7cfc00';
+            boxElement.style.borderColor = '#3b6e47';
+            setTimeout(() => { boxElement.style.color = ''; boxElement.style.borderColor = ''; }, 800);
+        }
+
+        function escapeHtmlEntities(string) {
+            return string.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
 </body>
 </html>

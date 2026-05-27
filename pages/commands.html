@@ -114,7 +114,7 @@
             border-color: var(--accent-light);
         }
 
-        /* Dashboard Grid UI Elements */
+        /* Dashboard Listing Configuration Panels */
         .creation-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -142,7 +142,7 @@
         .card-title { font-size: 15px; font-weight: bold; color: var(--text-bright); }
         .card-desc { font-size: 13px; color: var(--text-main); flex: 1; }
 
-        /* Document Node Formatting Elements */
+        /* Focused Canvas Dynamic Container Nodes */
         .viewer-card {
             background: var(--container-bg);
             border: var(--border-width) solid var(--border-color);
@@ -151,6 +151,13 @@
             box-shadow: var(--shadow-deep);
             display: flex;
             flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .viewer-action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             gap: var(--space-md);
         }
 
@@ -179,7 +186,7 @@
         .view-text { font-size: 14px; color: var(--text-main); line-height: 1.6; margin: 0; }
         .view-note { font-style: italic; color: var(--text-muted); padding-left: var(--space-sm); border-left: 2px solid var(--text-muted); margin: 0; }
 
-        /* Command Block Row Render Tree */
+        /* Integrated Output Component Tree */
         .connected-chain-group {
             display: flex;
             flex-direction: column;
@@ -247,7 +254,7 @@
         }
         .view-cmd-payload-box:hover { border-color: var(--accent-light); color: var(--text-bright); }
 
-        /* Structure Panel Dock Card */
+        /* Structure Panel Section Component Container */
         .structure-deck-panel {
             background: var(--input-bg);
             border: var(--border-width) solid var(--border-color);
@@ -314,10 +321,9 @@
     <div class="wrapper">
         <header>
             <div class="title-block">
-                <button class="btn btn-secondary" onclick="window.location.href='index.html'">🏠 Launcher</button>
+                <button class="btn btn-secondary" style="font-family: monospace;" onclick="handleIntegratedBackSequence()">&lt;--</button>
                 <h1 id="app-display-header" onclick="routeReturnHomeDashboard()">Command Block Creation</h1>
             </div>
-            <button id="nav-back-home-btn" class="btn btn-secondary" style="display: none;" onclick="routeReturnHomeDashboard()">← Close Creation</button>
         </header>
 
         <main id="app-view-router-canvas">
@@ -343,16 +349,24 @@
     </div>
 
     <script>
-        // Central Repository File Tracking Registry Index
-        // Add your .txt files to this array once you drop them into your live /commands/ directory
+        // Central Repository File Tracking Registry Dataset System 
         const COMMAND_CREATIONS_REGISTRY = [
-            // { file: "your_file_name.txt", defaultTitle: "Display Name Alternative" }
+            // { file: "your_file_name.txt", defaultTitle: "Display Alternative String" }
         ];
 
         let cachedParsedIndexDataset = [];
 
         window.addEventListener('DOMContentLoaded', initializeApplicationRuntimePipeline);
         window.addEventListener('hashchange', readLocationHashRouteToken);
+
+        function handleIntegratedBackSequence() {
+            const hasTargetHashActive = !!window.location.hash;
+            if (hasTargetHashActive) {
+                routeReturnHomeDashboard();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
 
         async function initializeApplicationRuntimePipeline() {
             if (COMMAND_CREATIONS_REGISTRY.length === 0) {
@@ -363,7 +377,7 @@
             const fetchPromises = COMMAND_CREATIONS_REGISTRY.map(async (item) => {
                 try {
                     const response = await fetch(`commands/${item.file}`);
-                    if (!response.ok) throw new Error("Fetch fail status");
+                    if (!response.ok) throw new Error("Fetch fault status");
                     const data = await response.text();
                     
                     let title = item.defaultTitle;
@@ -406,7 +420,6 @@
         }
 
         function renderGlobalDashboardHomeGrid() {
-            document.getElementById('nav-back-home-btn').style.display = 'none';
             const routerCanvas = document.getElementById('app-view-router-canvas');
             
             routerCanvas.innerHTML = `
@@ -466,15 +479,27 @@
         }
 
         function renderFocusedCreationDisplayPage(creationObject) {
-            document.getElementById('nav-back-home-btn').style.display = 'block';
             const canvas = document.getElementById('app-view-router-canvas');
             canvas.innerHTML = ''; 
 
             const container = document.createElement('div');
             container.className = 'viewer-card';
 
+            let actionLayoutWrapper = document.createElement('div');
+            actionLayoutWrapper.className = 'viewer-action-row';
+
             let headerMetaContainer = document.createElement('div');
             headerMetaContainer.style.cssText = 'display: flex; flex-direction: column; gap: 4px;';
+
+            let shareButtonEl = document.createElement('button');
+            shareButtonEl.className = 'btn';
+            shareButtonEl.innerText = 'Share';
+            shareButtonEl.onclick = () => {
+                const linkString = `${window.location.origin}${window.location.pathname}#${encodeURIComponent(creationObject.parsedTitle)}`;
+                navigator.clipboard.writeText(linkString);
+                shareButtonEl.innerText = 'Copied!';
+                setTimeout(() => { shareButtonEl.innerText = 'Share'; }, 1200);
+            };
 
             let tagsContainer = document.createElement('div');
             tagsContainer.className = 'tag-pill-container';
@@ -576,7 +601,10 @@
                 }
             });
 
-            if (headerMetaContainer.children.length > 0) container.appendChild(headerMetaContainer);
+            if (headerMetaContainer.children.length > 0) actionLayoutWrapper.appendChild(headerMetaContainer);
+            actionLayoutWrapper.appendChild(shareButtonEl);
+            container.appendChild(actionLayoutWrapper);
+
             if (tagsContainer.children.length > 0) container.appendChild(tagsContainer);
             if (headerMetaContainer.children.length > 0 || tagsContainer.children.length > 0) {
                 let ruleSpacer = document.createElement('hr');

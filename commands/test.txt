@@ -1,30 +1,28 @@
-TITLE: Test
-TAG: random
+H2: Creation
 
-H1: This just for a test
+H3: A
 
-NOTE: This is note
+H4: B
 
-TEXT: This body text...
+TEXT: This is body text
 
-Can have line break
+H2: Command
 
-CMD:I:AA:U:0
-Ghxdg
-CMD:C:AA:C:0
-To huf
-CMD:R:AA:U:0
-Wihty
-
-TEXT: Text again
-
-CMD:I:AA:U:0
-
+CMD:I:NR:U:0
+cmd a
 CMD:C:AA:U:0
+cmd b
+CMD:C:AA:C:0
+cmd c
+CMD:C:AA:U:0
+cmd d
 
-CMD:R:AA:U:0
+TEXT: Body text
+
+H2: NPC
 
 CMD:NPC
-Nnpphhcc
-CMD:CHAT
-Chat
+/a
+/B
+/C
+/D

@@ -1,5 +1,3 @@
-<!-- /pages/supporters.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +6,14 @@
 <title>Supporters</title>
 
 <style>
+    /* Registering your custom local Alagard font */
+    @font-face {
+        font-family: 'Alagard';
+        src: url('../assets/font/alagard.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
     body {
         background: #0e0e11;
         color: #b4b4bc;
@@ -24,21 +30,44 @@
     h1 {
         color: white;
         margin-bottom: 24px;
+        /* Applying Alagard font to header */
+        font-family: 'Alagard', monospace;
     }
 
+    /* Box style back button matching the commands launcher look */
+    .back-box-btn {
+        display: inline-block;
+        background: #0f0f12;
+        border: 1px solid #2d2d38;
+        color: #b4b4bc;
+        padding: 8px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-family: monospace;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .back-box-btn:hover {
+        border-color: #A77A99;
+        color: white;
+    }
+
+    /* Main Supporters Box Customizations */
     .content-box {
         background: #18181f;
         border: 1px solid #2d2d38;
         border-radius: 8px;
-        padding: 20px;
+        padding: 24px;
         white-space: pre-wrap;
-    }
-
-    .back-link {
-        display: inline-block;
-        margin-bottom: 24px;
-        color: #A77A99;
-        text-decoration: none;
+        
+        /* Updates requested */
+        font-family: 'Alagard', monospace; /* Uses Alagard font */
+        font-size: 1.4rem;                  /* 40% bigger text size base */
+        text-align: center;                /* Center-aligns all names */
     }
 </style>
 </head>
@@ -46,8 +75,8 @@
 
 <div class="container">
 
-    <a href="../index.html" class="back-link">
-        ← Back
+    <a href="../index.html" class="back-box-btn">
+        &lt;--
     </a>
 
     <h1>SUPPORTERS</h1>

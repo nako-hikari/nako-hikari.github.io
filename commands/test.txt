@@ -1,0 +1,30 @@
+TITLE: Test
+TAG: random
+
+H1: This just for a test
+
+NOTE: This is note
+
+TEXT: This body text...
+
+Can have line break
+
+CMD:I:AA:U:0
+Ghxdg
+CMD:C:AA:C:0
+To huf
+CMD:R:AA:U:0
+Wihty
+
+TEXT: Text again
+
+CMD:I:AA:U:0
+
+CMD:C:AA:U:0
+
+CMD:R:AA:U:0
+
+CMD:NPC
+Nnpphhcc
+CMD:CHAT
+Chat

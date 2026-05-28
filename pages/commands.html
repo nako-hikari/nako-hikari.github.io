@@ -182,13 +182,11 @@
         .view-text { font-size: 14px; color: var(--text-main); line-height: 1.6; margin: 0; }
         .view-note { font-style: italic; color: var(--text-muted); padding-left: var(--space-sm); border-left: 2px solid var(--text-muted); margin: 0; }
 
-        /* Parsing Component Classes for Content String Syntax Transformations */
         .parsed-link { color: var(--accent-light); text-decoration: none; border-bottom: 1px dashed var(--accent-dark-hover); transition: color var(--transition-fast); }
         .parsed-link:hover { color: var(--accent-light-hover); border-bottom-style: solid; }
         .parsed-img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: var(--border-width) solid var(--border-color); margin: var(--space-sm) 0; display: block; }
         .parsed-embed-frame { width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); border: var(--border-width) solid var(--border-color); margin: var(--space-sm) 0; background: var(--bg-color); }
 
-        /* Structural Container Chains */
         .connected-chain-group {
             display: flex;
             flex-direction: column;
@@ -209,7 +207,6 @@
         }
         .connected-chain-group .view-cmd-row:last-child { border-bottom: none; }
 
-        /* Block Coloration Matrices */
         .view-cmd-row.color-i { background-color: rgba(212, 124, 52, 0.05); border-left: 4px solid var(--mc-impulse); }
         .view-cmd-row.color-r { background-color: rgba(123, 66, 130, 0.05); border-left: 4px solid var(--mc-repeat); }
         .view-cmd-row.color-c { background-color: rgba(43, 140, 131, 0.05); border-left: 4px solid var(--mc-chain); }
@@ -264,7 +261,6 @@
             align-items: center;
         }
 
-        /* Standardized Action Buttons Graphic Map Node */
         .icon-copy-action-btn {
             width: 32px;
             height: 32px;
@@ -281,7 +277,6 @@
         .icon-copy-action-btn:hover { border-color: var(--accent-light); background: var(--container-bg); }
         .icon-copy-action-btn img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
 
-        /* Specialized Multi-Line Compounded Macro Elements */
         .npc-compound-card {
             background: var(--input-bg);
             border: var(--border-width) solid var(--border-color);
@@ -324,7 +319,6 @@
         }
         .npc-router-explainer-tag:hover { color: var(--accent-light); }
 
-        /* Structure Panel Section Component Container */
         .structure-deck-panel {
             background: var(--input-bg);
             border: var(--border-width) solid var(--border-color);
@@ -366,7 +360,6 @@
         .btn-secondary:hover { border-color: var(--accent-light); color: var(--text-bright); }
         .btn:disabled { background: var(--border-color); color: var(--text-muted); cursor: not-allowed; }
 
-        /* Master Repository Footer Ruleset */
         .footer { margin-top: 32px; padding-bottom: 16px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; width: 100%; }
         .footer-title { font-size: 12px; color: var(--text-muted); opacity: 0.75; letter-spacing: 0.5px; }
         .footer-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
@@ -438,7 +431,10 @@
                         if (!fileContentResponse.ok) throw new Error();
                         const data = await fileContentResponse.text();
                         
-                        let title = item.name.replace('.txt', '').replace(/_/g, ' ');
+                        // Default title fallback cleaning logic: Strips extension and fixes case (e.g., test.txt -> Test)
+                        let cleanName = item.name.substring(0, item.name.lastIndexOf('.')).replace(/_/g, ' ');
+                        let title = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+                        
                         let desc = "No descriptor statement declared in source file.";
                         let tags = [];
 
@@ -465,12 +461,17 @@
         }
 
         function readLocationHashRouteToken() {
-            const currentHash = decodeURIComponent(window.location.hash.replace('#', '')).trim();
+            const currentHash = decodeURIComponent(window.location.hash.replace('#', '')).trim().toLowerCase();
+            
             if (currentHash && cachedParsedIndexDataset.length > 0) {
-                const searchMatch = cachedParsedIndexDataset.find(c => 
-                    c.parsedTitle.toLowerCase() === currentHash.toLowerCase() || 
-                    c.file.toLowerCase() === currentHash.toLowerCase()
-                );
+                // FIXED ROUTER ROUTING LOGIC: Matches against title, original file name, or filename without .txt extension safely
+                const searchMatch = cachedParsedIndexDataset.find(c => {
+                    const cleanFileName = c.file.substring(0, c.file.lastIndexOf('.')).toLowerCase();
+                    return c.parsedTitle.toLowerCase() === currentHash || 
+                           c.file.toLowerCase() === currentHash ||
+                           cleanFileName === currentHash;
+                });
+                
                 if (searchMatch && searchMatch.rawPayload) {
                     renderFocusedCreationDisplayPage(searchMatch);
                     return;
@@ -498,6 +499,7 @@
             dataset.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'creation-card';
+                // FIXED ONCLICK HASH BINDING: Uses the exact cleaned title to link beautifully
                 card.onclick = () => { window.location.hash = encodeURIComponent(item.parsedTitle); };
                 let tagPillsStr = item.parsedTags.map(t => `<span class="tag-pill">${t}</span>`).join(' ');
 
@@ -526,12 +528,9 @@
 
         function parseCustomMarkdownSyntaxes(rawTextString) {
             let clean = escapeHtmlEntities(rawTextString);
-            
             clean = clean.replace(/\[link\]\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="parsed-link">$1</a>');
-            
             clean = clean.replace(/\[img\]\((.*?)\)/g, '<img src="$1" class="parsed-img" alt="Embedded Source Asset">');
-            
-            clean = clean.replace(/\[embbed\]\((.*?)\)/g, function(match, url) {
+            clean = clean.replace(/\[Embbed\]\((.*?)\)/g, function(match, url) {
                 let embeddedTargetUrl = url;
                 if (url.includes('youtube.com/watch?v=')) {
                     embeddedTargetUrl = url.replace('watch?v=', 'embed/');
@@ -540,7 +539,6 @@
                 }
                 return `<iframe class="parsed-embed-frame" src="${embeddedTargetUrl}" allowfullscreen></iframe>`;
             });
-
             return clean;
         }
 
@@ -628,7 +626,6 @@
                     noteEl.innerHTML = parseCustomMarkdownSyntaxes(baseLine.replace('NOTE:', '').trim());
                     elementsWrapper.appendChild(noteEl);
                 }
-                // Specialized Native Macro Modifiers
                 else if (baseLine.startsWith('CMD:NPC') || baseLine.startsWith('CMD:CHAT')) {
                     activeChainStackElement = null;
                     const isNpcType = baseLine.startsWith('CMD:NPC');
@@ -740,7 +737,6 @@
 
             container.appendChild(elementsWrapper);
 
-            // Structure Dynamic Payload Validation Pipeline 
             const pureBaseName = creationObject.file.substring(0, creationObject.file.lastIndexOf('.'));
             const downloadStructureUrl = `structures/${pureBaseName}.mcstructure`;
             

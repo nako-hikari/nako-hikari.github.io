@@ -29,7 +29,7 @@
             --space-lg: 16px;
             --space-xl: 20px;
             --space-2xl: 24px;
-            --max-width: 950px;
+            --max-width: 900px;
 
             --radius-sm: 4px;
             --radius-md: 6px;
@@ -67,7 +67,7 @@
             max-width: var(--max-width);
             display: flex;
             flex-direction: column;
-            gap: var(--space-lg);
+            gap: var(--space-xl);
         }
 
         header {
@@ -110,11 +110,8 @@
             transition: var(--transition-fast);
         }
 
-        .search-box:focus {
-            border-color: var(--accent-light);
-        }
+        .search-box:focus { border-color: var(--accent-light); }
 
-        /* Dashboard Listing Configuration Panels */
         .creation-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -142,7 +139,6 @@
         .card-title { font-size: 15px; font-weight: bold; color: var(--text-bright); }
         .card-desc { font-size: 13px; color: var(--text-main); flex: 1; }
 
-        /* Focused Canvas Dynamic Container Nodes */
         .viewer-card {
             background: var(--container-bg);
             border: var(--border-width) solid var(--border-color);
@@ -177,16 +173,22 @@
         }
         .tag-flip-pill { background: #4a2323; border-color: #6e3333; color: #ff8fc0; }
 
-        .view-h1 { font-size: 1.5rem; color: var(--text-bright); border-bottom: 2px solid var(--border-color); padding-bottom: 4px; margin-top: var(--space-md); font-weight: 600; }
-        .view-h2 { font-size: 1.3rem; color: var(--text-bright); margin-top: var(--space-md); font-weight: 600; }
-        .view-h3 { font-size: 1.1rem; color: var(--text-bright); margin-top: var(--space-md); font-weight: 600; }
-        .view-h4 { font-size: 1.0rem; color: var(--text-bright); margin-top: var(--space-md); font-weight: 600; }
-        .view-h5 { font-size: 0.9rem; color: var(--text-main); margin-top: var(--space-md); text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+        .view-h1 { font-size: 1.6rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
+        .view-h2 { font-size: 1.4rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
+        .view-h3 { font-size: 1.2rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
+        .view-h4 { font-size: 1.0rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
+        .view-h5 { font-size: 0.9rem; color: var(--text-main); margin-top: var(--space-md); margin-bottom: var(--space-xs); text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
         
         .view-text { font-size: 14px; color: var(--text-main); line-height: 1.6; margin: 0; }
         .view-note { font-style: italic; color: var(--text-muted); padding-left: var(--space-sm); border-left: 2px solid var(--text-muted); margin: 0; }
 
-        /* Integrated Output Component Tree */
+        /* Parsing Component Classes for Content String Syntax Transformations */
+        .parsed-link { color: var(--accent-light); text-decoration: none; border-bottom: 1px dashed var(--accent-dark-hover); transition: color var(--transition-fast); }
+        .parsed-link:hover { color: var(--accent-light-hover); border-bottom-style: solid; }
+        .parsed-img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: var(--border-width) solid var(--border-color); margin: var(--space-sm) 0; display: block; }
+        .parsed-embed-frame { width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); border: var(--border-width) solid var(--border-color); margin: var(--space-sm) 0; background: var(--bg-color); }
+
+        /* Structural Container Chains */
         .connected-chain-group {
             display: flex;
             flex-direction: column;
@@ -194,26 +196,36 @@
             border: var(--border-width) solid var(--border-color);
             border-radius: var(--radius-md);
             overflow: hidden;
+            margin: var(--space-sm) 0;
         }
 
         .view-cmd-row {
             display: flex;
             align-items: center;
             padding: var(--space-xs);
-            gap: 6px;
+            gap: var(--space-sm);
             border-bottom: var(--border-width) solid var(--border-color);
             position: relative;
         }
         .connected-chain-group .view-cmd-row:last-child { border-bottom: none; }
 
-        .view-cmd-row.color-i { background-color: rgba(212, 124, 52, 0.08); border-left: 4px solid var(--mc-impulse); }
-        .view-cmd-row.color-r { background-color: rgba(123, 66, 130, 0.08); border-left: 4px solid var(--mc-repeat); }
-        .view-cmd-row.color-c { background-color: rgba(43, 140, 131, 0.08); border-left: 4px solid var(--mc-chain); }
-        .view-cmd-row.cond-border { box-shadow: inset 0 0 0 1px #ffffff; }
+        /* Block Coloration Matrices */
+        .view-cmd-row.color-i { background-color: rgba(212, 124, 52, 0.05); border-left: 4px solid var(--mc-impulse); }
+        .view-cmd-row.color-r { background-color: rgba(123, 66, 130, 0.05); border-left: 4px solid var(--mc-repeat); }
+        .view-cmd-row.color-c { background-color: rgba(43, 140, 131, 0.05); border-left: 4px solid var(--mc-chain); }
+        .view-cmd-row.cond-border { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15); }
 
-        .view-row-idx { font-family: monospace; font-weight: bold; width: 18px; text-align: center; color: var(--text-muted); font-size: 11px; }
-        .meta-badge-stack { display: flex; gap: 4px; flex-shrink: 0; user-select: none; }
+        .view-row-idx { font-family: monospace; font-weight: bold; width: 20px; text-align: center; color: var(--text-muted); font-size: 11px; }
         
+        .block-face-texture-node {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            flex-shrink: 0;
+        }
+
+        .meta-badge-stack { display: flex; gap: 4px; flex-shrink: 0; user-select: none; }
         .meta-badge {
             font-size: 10px;
             font-weight: 800;
@@ -242,17 +254,75 @@
             background: var(--bg-color);
             border: var(--border-width) solid var(--border-color);
             color: #e5c07b;
-            padding: 4px var(--space-sm);
+            padding: 6px var(--space-sm);
             border-radius: var(--radius-sm);
             font-size: 12.5px;
             white-space: nowrap;
             overflow-x: auto;
-            cursor: pointer;
-            height: 28px;
+            height: 32px;
             display: flex;
             align-items: center;
         }
-        .view-cmd-payload-box:hover { border-color: var(--accent-light); color: var(--text-bright); }
+
+        /* Standardized Action Buttons Graphic Map Node */
+        .icon-copy-action-btn {
+            width: 32px;
+            height: 32px;
+            background: var(--box-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: var(--transition-fast);
+        }
+        .icon-copy-action-btn:hover { border-color: var(--accent-light); background: var(--container-bg); }
+        .icon-copy-action-btn img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
+
+        /* Specialized Multi-Line Compounded Macro Elements */
+        .npc-compound-card {
+            background: var(--input-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+            margin: var(--space-sm) 0;
+        }
+        .npc-scroller-stack {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+        .npc-line-box {
+            font-family: "Courier New", Courier, monospace;
+            background: var(--bg-color);
+            border: var(--border-width) solid var(--border-color);
+            color: #e5c07b;
+            padding: var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            min-height: 32px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .npc-router-explainer-tag {
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            display: block;
+            margin-top: -4px;
+            margin-bottom: var(--space-md);
+            transition: color var(--transition-fast);
+        }
+        .npc-router-explainer-tag:hover { color: var(--accent-light); }
 
         /* Structure Panel Section Component Container */
         .structure-deck-panel {
@@ -266,17 +336,16 @@
             gap: var(--space-md);
             margin-top: var(--space-md);
         }
-
         .structure-preview-meta { display: flex; align-items: center; gap: var(--space-md); }
         .structure-img-frame {
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             background: var(--box-bg);
             border: var(--border-width) solid var(--border-color);
             border-radius: var(--radius-md);
             object-fit: cover;
+            image-rendering: pixelated;
         }
-
         .structure-label-title { font-weight: bold; color: var(--text-bright); font-size: 14px; }
         .structure-label-sub { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
@@ -295,19 +364,12 @@
         .btn:hover { background: var(--accent-dark-hover); }
         .btn-secondary { background: var(--box-bg); border: var(--border-width) solid var(--border-color); color: var(--text-main); }
         .btn-secondary:hover { border-color: var(--accent-light); color: var(--text-bright); }
+        .btn:disabled { background: var(--border-color); color: var(--text-muted); cursor: not-allowed; }
 
-        .footer {
-            margin-top: var(--space-2xl, 32px);
-            padding-bottom: var(--space-lg, 16px);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-sm, 8px);
-            align-items: center;
-            width: 100%;
-        }
+        /* Master Repository Footer Ruleset */
+        .footer { margin-top: 32px; padding-bottom: 16px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; width: 100%; }
         .footer-title { font-size: 12px; color: var(--text-muted); opacity: 0.75; letter-spacing: 0.5px; }
-        .footer-links { display: flex; gap: var(--space-md); flex-wrap: wrap; justify-content: center; }
+        .footer-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
         .footer-links a { display: flex; align-items: center; gap: 6px; color: var(--accent-light); text-decoration: none; font-size: 13px; opacity: 0.85; transition: opacity var(--transition-fast), color var(--transition-fast); }
         .footer-links a:hover { color: var(--accent-light-hover); opacity: 1; }
         .footer-links img { width: 16px; height: 16px; filter: brightness(0) invert(1); opacity: 0.9; }
@@ -327,7 +389,8 @@
         </header>
 
         <main id="app-view-router-canvas">
-            </main>
+             <div style="text-align: center; color: var(--text-muted); padding: var(--space-2xl);">Scanning workspace directories...</div>
+        </main>
 
         <div class="footer">
             <div class="footer-title">By Nako Hikari</div>
@@ -349,19 +412,13 @@
     </div>
 
     <script>
-        // Central Repository File Tracking Registry Dataset System 
-        const COMMAND_CREATIONS_REGISTRY = [
-            // { file: "your_file_name.txt", defaultTitle: "Display Alternative String" }
-        ];
-
         let cachedParsedIndexDataset = [];
 
         window.addEventListener('DOMContentLoaded', initializeApplicationRuntimePipeline);
         window.addEventListener('hashchange', readLocationHashRouteToken);
 
         function handleIntegratedBackSequence() {
-            const hasTargetHashActive = !!window.location.hash;
-            if (hasTargetHashActive) {
+            if (!!window.location.hash) {
                 routeReturnHomeDashboard();
             } else {
                 window.location.href = '../index.html';
@@ -369,43 +426,46 @@
         }
 
         async function initializeApplicationRuntimePipeline() {
-            if (COMMAND_CREATIONS_REGISTRY.length === 0) {
-                renderGlobalDashboardHomeGrid();
-                return;
-            }
+            try {
+                const response = await fetch('https://api.github.com/repos/nako-hikari/nako-hikari.github.io/contents/commands');
+                if (!response.ok) throw new Error();
+                const directoryItems = await response.json();
+                const targetFiles = directoryItems.filter(item => item.name.endsWith('.txt'));
 
-            const fetchPromises = COMMAND_CREATIONS_REGISTRY.map(async (item) => {
-                try {
-                    const response = await fetch(`commands/${item.file}`);
-                    if (!response.ok) throw new Error("Fetch fault status");
-                    const data = await response.text();
-                    
-                    let title = item.defaultTitle;
-                    let desc = "No descriptor statement declared in source file.";
-                    let tags = [];
+                const fetchPromises = targetFiles.map(async (item) => {
+                    try {
+                        const fileContentResponse = await fetch(`commands/${item.name}`);
+                        if (!fileContentResponse.ok) throw new Error();
+                        const data = await fileContentResponse.text();
+                        
+                        let title = item.name.replace('.txt', '').replace(/_/g, ' ');
+                        let desc = "No descriptor statement declared in source file.";
+                        let tags = [];
 
-                    const segments = data.split('\n\n');
-                    if (segments[0]) {
-                        segments[0].split('\n').forEach(line => {
-                            if (line.startsWith('TITLE:')) title = line.replace('TITLE:', '').trim();
-                            if (line.startsWith('DESC:')) desc = line.replace('DESC:', '').trim();
-                            if (line.startsWith('TAG:')) tags = line.replace('TAG:', '').split(',').map(t => t.trim());
-                        });
+                        const segments = data.split('\n\n');
+                        if (segments[0]) {
+                            segments[0].split('\n').forEach(line => {
+                                if (line.startsWith('TITLE:')) title = line.replace('TITLE:', '').trim();
+                                if (line.startsWith('DESC:')) desc = line.replace('DESC:', '').trim();
+                                if (line.startsWith('TAG:')) tags = line.replace('TAG:', '').split(',').map(t => t.trim());
+                            });
+                        }
+
+                        return { file: item.name, parsedTitle: title, parsedDesc: desc, parsedTags: tags, rawPayload: data };
+                    } catch (err) {
+                        return { file: item.name, parsedTitle: item.name, parsedDesc: "Failed to download asset.", parsedTags: [], rawPayload: null };
                     }
+                });
 
-                    return { ...item, parsedTitle: title, parsedDesc: desc, parsedTags: tags, rawPayload: data };
-                } catch (err) {
-                    return { ...item, parsedTitle: item.defaultTitle, parsedDesc: "Failed to download text profile asset.", parsedTags: [], rawPayload: null };
-                }
-            });
-
-            cachedParsedIndexDataset = await Promise.all(fetchPromises);
+                cachedParsedIndexDataset = await Promise.all(fetchPromises);
+            } catch (err) {
+                console.warn("GitHub REST Engine connection fault.");
+            }
             readLocationHashRouteToken();
         }
 
         function readLocationHashRouteToken() {
             const currentHash = decodeURIComponent(window.location.hash.replace('#', '')).trim();
-            
             if (currentHash && cachedParsedIndexDataset.length > 0) {
                 const searchMatch = cachedParsedIndexDataset.find(c => 
                     c.parsedTitle.toLowerCase() === currentHash.toLowerCase() || 
@@ -421,14 +481,12 @@
 
         function renderGlobalDashboardHomeGrid() {
             const routerCanvas = document.getElementById('app-view-router-canvas');
-            
             routerCanvas.innerHTML = `
                 <div class="search-container">
                     <input type="text" id="live-filter-search" class="search-box" placeholder="Search creations by title or tag keywords..." oninput="handleSearchFilteringEngine(this.value)">
                 </div>
                 <div class="creation-grid" id="dashboard-cards-container"></div>
             `;
-
             injectFilteredCardsIntoDashboard(cachedParsedIndexDataset);
         }
 
@@ -441,7 +499,6 @@
                 const card = document.createElement('div');
                 card.className = 'creation-card';
                 card.onclick = () => { window.location.hash = encodeURIComponent(item.parsedTitle); };
-
                 let tagPillsStr = item.parsedTags.map(t => `<span class="tag-pill">${t}</span>`).join(' ');
 
                 card.innerHTML = `
@@ -451,14 +508,6 @@
                 `;
                 gridContainer.appendChild(card);
             });
-
-            if (dataset.length === 0) {
-                gridContainer.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: var(--space-2xl) var(--space-md);">
-                        <div style="font-size: 16px; font-weight: bold; color: var(--text-main); margin-bottom: 4px;">No Creations Found</div>
-                        <p style="margin: 0; font-size: 13px;">Drop formatted config files inside your /commands/ folder and map them into the script registry configuration block to get started.</p>
-                    </div>`;
-            }
         }
 
         function handleSearchFilteringEngine(searchQuery) {
@@ -467,18 +516,35 @@
                 injectFilteredCardsIntoDashboard(cachedParsedIndexDataset);
                 return;
             }
-
             const filtered = cachedParsedIndexDataset.filter(item => {
-                const matchTitle = item.parsedTitle.toLowerCase().includes(query);
-                const matchDesc = item.parsedDesc.toLowerCase().includes(query);
-                const matchTags = item.parsedTags.some(t => t.toLowerCase().includes(query));
-                return matchTitle || matchDesc || matchTags;
+                return item.parsedTitle.toLowerCase().includes(query) || 
+                       item.parsedDesc.toLowerCase().includes(query) || 
+                       item.parsedTags.some(t => t.toLowerCase().includes(query));
             });
-
             injectFilteredCardsIntoDashboard(filtered);
         }
 
-        function renderFocusedCreationDisplayPage(creationObject) {
+        function parseCustomMarkdownSyntaxes(rawTextString) {
+            let clean = escapeHtmlEntities(rawTextString);
+            
+            clean = clean.replace(/\[link\]\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="parsed-link">$1</a>');
+            
+            clean = clean.replace(/\[img\]\((.*?)\)/g, '<img src="$1" class="parsed-img" alt="Embedded Source Asset">');
+            
+            clean = clean.replace(/\[embbed\]\((.*?)\)/g, function(match, url) {
+                let embeddedTargetUrl = url;
+                if (url.includes('youtube.com/watch?v=')) {
+                    embeddedTargetUrl = url.replace('watch?v=', 'embed/');
+                } else if (url.includes('youtu.be/')) {
+                    embeddedTargetUrl = url.replace('youtu.be/', 'youtube.com/embed/');
+                }
+                return `<iframe class="parsed-embed-frame" src="${embeddedTargetUrl}" allowfullscreen></iframe>`;
+            });
+
+            return clean;
+        }
+
+        async function renderFocusedCreationDisplayPage(creationObject) {
             const canvas = document.getElementById('app-view-router-canvas');
             canvas.innerHTML = ''; 
 
@@ -509,6 +575,7 @@
 
             let activeChainStackElement = null;
             let currentChainRowIndex = 0;
+            let hasNpcBlockIncluded = false;
 
             const segments = creationObject.rawPayload.split('\n\n');
 
@@ -531,8 +598,7 @@
                     headerMetaContainer.appendChild(descEl);
                 } 
                 else if (baseLine.startsWith('TAG:')) {
-                    const tagString = baseLine.replace('TAG:', '').trim();
-                    tagString.split(',').forEach(t => {
+                    baseLine.replace('TAG:', '').split(',').forEach(t => {
                         let pill = document.createElement('span');
                         pill.className = 'tag-pill';
                         if (t.trim().toLowerCase() === 'flip') pill.classList.add('tag-flip-pill');
@@ -552,15 +618,69 @@
                     activeChainStackElement = null;
                     let textEl = document.createElement('p');
                     textEl.className = 'view-text';
-                    textEl.innerText = baseLine.replace('TEXT:', '').trim();
+                    textEl.innerHTML = parseCustomMarkdownSyntaxes(baseLine.replace('TEXT:', '').trim());
                     elementsWrapper.appendChild(textEl);
                 }
                 else if (baseLine.startsWith('NOTE:')) {
                     activeChainStackElement = null;
                     let noteEl = document.createElement('p');
                     noteEl.className = 'view-note';
-                    noteEl.innerText = baseLine.replace('NOTE:', '').trim();
+                    noteEl.innerHTML = parseCustomMarkdownSyntaxes(baseLine.replace('NOTE:', '').trim());
                     elementsWrapper.appendChild(noteEl);
+                }
+                // Specialized Native Macro Modifiers
+                else if (baseLine.startsWith('CMD:NPC') || baseLine.startsWith('CMD:CHAT')) {
+                    activeChainStackElement = null;
+                    const isNpcType = baseLine.startsWith('CMD:NPC');
+                    if (isNpcType) hasNpcBlockIncluded = true;
+
+                    let npcNodeWrapper = document.createElement('div');
+                    npcNodeWrapper.className = 'npc-compound-card';
+
+                    let assetTexture = document.createElement('img');
+                    assetTexture.className = 'block-face-texture-node';
+                    assetTexture.src = isNpcType ? 'assets/images/npc.png' : 'assets/images/chat.png';
+                    assetTexture.title = isNpcType ? 'NPC' : 'Chat';
+                    assetTexture.alt = isNpcType ? 'NPC' : 'Chat';
+
+                    let indexingLabel = document.createElement('div');
+                    indexingLabel.className = 'view-row-idx';
+                    indexingLabel.innerText = '1';
+
+                    let textBlockContainer = document.createElement('div');
+                    textBlockContainer.className = 'npc-scroller-stack';
+
+                    const macroPayloadLines = lines.slice(1);
+                    macroPayloadLines.forEach(payloadLine => {
+                        let lineRow = document.createElement('div');
+                        lineRow.className = 'npc-line-box';
+                        lineRow.innerText = payloadLine;
+                        textBlockContainer.appendChild(lineRow);
+                    });
+
+                    let functionalCopyBtn = document.createElement('div');
+                    functionalCopyBtn.className = 'icon-copy-action-btn';
+                    functionalCopyBtn.innerHTML = `<img src="assets/images/copy.png" alt="Copy Box">`;
+                    functionalCopyBtn.onclick = () => {
+                        const compoundingTextBuffer = macroPayloadLines.join('\n');
+                        navigator.clipboard.writeText(compoundingTextBuffer);
+                        functionalCopyBtn.style.borderColor = '#3b6e47';
+                        setTimeout(() => { functionalCopyBtn.style.borderColor = ''; }, 800);
+                    };
+
+                    npcNodeWrapper.appendChild(indexingLabel);
+                    npcNodeWrapper.appendChild(assetTexture);
+                    npcNodeWrapper.appendChild(textBlockContainer);
+                    npcNodeWrapper.appendChild(functionalCopyBtn);
+                    elementsWrapper.appendChild(npcNodeWrapper);
+
+                    if (isNpcType) {
+                        let dynamicExplainerLink = document.createElement('div');
+                        dynamicExplainerLink.className = 'npc-router-explainer-tag';
+                        dynamicExplainerLink.innerText = '--- click here to know how to use NPC as setup ---';
+                        dynamicExplainerLink.onclick = () => { window.location.href = 'pages/npc-setup.md'; };
+                        elementsWrapper.appendChild(dynamicExplainerLink);
+                    }
                 }
                 else if (baseLine.startsWith('CMD:')) {
                     if (!activeChainStackElement) {
@@ -582,19 +702,25 @@
                         const condToken = (metaTokens[3] || 'U').toUpperCase();
                         const tickToken = metaTokens[4] || '0';
 
+                        let blockGraphicSrc = 'assets/images/chain.png';
+                        if (modeToken === 'I') blockGraphicSrc = 'assets/images/impulse.png';
+                        if (modeToken === 'R') blockGraphicSrc = 'assets/images/repeat.png';
+
                         let rowNode = document.createElement('div');
                         rowNode.className = `view-cmd-row color-${modeToken.toLowerCase()}`;
                         if (condToken.startsWith('C')) rowNode.classList.add('cond-border');
 
                         rowNode.innerHTML = `
                             <div class="view-row-idx">${currentChainRowIndex}</div>
+                            <img src="${blockGraphicSrc}" class="block-face-texture-node" title="${modeToken === 'I' ? 'Impulse' : modeToken === 'R' ? 'Repeat' : 'Chain'}" alt="Block Graphic">
                             <div class="meta-badge-stack">
                                 <span class="meta-badge badge-type-${modeToken.toLowerCase()}">${modeToken}</span>
                                 <span class="meta-badge ${condToken.startsWith('C') ? 'badge-cond-cn' : 'badge-cond-un'}">${condToken.startsWith('C') ? 'CN' : 'UN'}</span>
                                 <span class="meta-badge ${activeToken === 'AA' ? 'badge-active-aa' : 'badge-active-nr'}">${activeToken}</span>
                                 <span class="meta-badge badge-tick">${tickToken}</span>
                             </div>
-                            <div class="view-cmd-payload-box" onclick="copyIndividualLineText(this)">${escapeHtmlEntities(commandStringPayload)}</div>
+                            <div class="view-cmd-payload-box">${escapeHtmlEntities(commandStringPayload)}</div>
+                            <div class="icon-copy-action-btn" onclick="copyInlinePayloadRowText(this)"><img src="assets/images/copy.png" alt="Copy"></div>
                         `;
                         activeChainStackElement.appendChild(rowNode);
                     }
@@ -614,21 +740,41 @@
 
             container.appendChild(elementsWrapper);
 
+            // Structure Dynamic Payload Validation Pipeline 
             const pureBaseName = creationObject.file.substring(0, creationObject.file.lastIndexOf('.'));
             const downloadStructureUrl = `structures/${pureBaseName}.mcstructure`;
-
+            
             let structureDeck = document.createElement('div');
             structureDeck.className = 'structure-deck-panel';
-            structureDeck.innerHTML = `
-                <div class="structure-preview-meta">
-                    <img src="assets/images/structure.png" class="structure-img-frame" alt="Structure Thumbnail Preview" onerror="this.style.display='none'">
-                    <div>
-                        <div class="structure-label-title">${escapeHtmlEntities(pureBaseName)}.mcstructure</div>
-                        <div class="structure-label-sub">In-Game Spatial Block Model Data</div>
+
+            try {
+                const checkFileResponse = await fetch(downloadStructureUrl, { method: 'HEAD' });
+                if (checkFileResponse.ok) {
+                    structureDeck.innerHTML = `
+                        <div class="structure-preview-meta">
+                            <img src="assets/images/structure.png" class="structure-img-frame" alt="Structure Frame">
+                            <div>
+                                <div class="structure-label-title">${escapeHtmlEntities(pureBaseName)}.mcstructure</div>
+                                <div class="structure-label-sub">In-Game Block Structure Data</div>
+                            </div>
+                        </div>
+                        <button class="btn" onclick="window.location.href='${downloadStructureUrl}'">Download</button>
+                    `;
+                } else {
+                    throw new Error();
+                }
+            } catch (e) {
+                structureDeck.innerHTML = `
+                    <div class="structure-preview-meta">
+                        <img src="assets/images/structure/un" class="structure-img-frame" alt="Unavailable Frame" onerror="this.src='assets/images/structure.png'; this.style.opacity='0.3';">
+                        <div>
+                            <div class="structure-label-title" style="color: var(--text-muted);">Structure Unavailable</div>
+                            <div class="structure-label-sub">No matching model structure found for deployment</div>
+                        </div>
                     </div>
-                </div>
-                <button class="btn" onclick="window.location.href='${downloadStructureUrl}'">Download</button>
-            `;
+                    <button class="btn" disabled>Unavailable</button>
+                `;
+            }
             
             container.appendChild(structureDeck);
             canvas.appendChild(container);
@@ -639,11 +785,11 @@
             renderGlobalDashboardHomeGrid();
         }
 
-        function copyIndividualLineText(boxElement) {
-            navigator.clipboard.writeText(boxElement.innerText);
-            boxElement.style.color = '#7cfc00';
-            boxElement.style.borderColor = '#3b6e47';
-            setTimeout(() => { boxElement.style.color = ''; boxElement.style.borderColor = ''; }, 800);
+        function copyInlinePayloadRowText(actionButtonNode) {
+            const contentString = actionButtonNode.parentElement.querySelector('.view-cmd-payload-box').innerText;
+            navigator.clipboard.writeText(contentString);
+            actionButtonNode.style.borderColor = '#3b6e47';
+            setTimeout(() => { actionButtonNode.style.borderColor = ''; }, 800);
         }
 
         function escapeHtmlEntities(string) {

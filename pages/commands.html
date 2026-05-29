@@ -18,6 +18,8 @@
             --text-muted: #5a5a66;
             --text-bright: #ffffff;
             --border-color: #2d2d38;
+            --success-bg: #2a4f32;
+            --success-border: #3b6e47;
 
             --mc-impulse: #d47c34;
             --mc-repeat: #7b4282;
@@ -38,6 +40,7 @@
             --shadow-deep: 0 6px 16px rgba(0, 0, 0, 0.6);
             --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.3);
             --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -56,6 +59,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
 
         @media (max-width: 600px) {
@@ -85,8 +89,9 @@
         }
 
         h1 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 600;
+            line-height: 1.3;
             color: var(--text-bright);
             margin: 0;
             cursor: pointer;
@@ -99,18 +104,22 @@
 
         .search-box {
             width: 100%;
-            background: var(--container-bg);
+            background: var(--input-bg);
             border: var(--border-width) solid var(--border-color);
             border-radius: var(--radius-lg);
             padding: var(--space-md) var(--space-lg);
             color: var(--text-bright);
+            font-family: "Courier New", Courier, monospace;
             font-size: 14px;
             box-shadow: var(--shadow-soft);
             outline: none;
             transition: var(--transition-fast);
         }
 
-        .search-box:focus { border-color: var(--accent-light); }
+        .search-box:focus { 
+            border-color: var(--accent-light);
+            box-shadow: 0 0 0 2px rgba(167, 122, 153, 0.2);
+        }
 
         .creation-grid {
             display: grid;
@@ -123,7 +132,7 @@
             border: var(--border-width) solid var(--border-color);
             border-radius: var(--radius-lg);
             padding: var(--space-md);
-            box-shadow: var(--shadow-soft);
+            box-shadow: var(--shadow-deep);
             cursor: pointer;
             transition: var(--transition-fast);
             display: flex;
@@ -133,7 +142,12 @@
 
         .creation-card:hover {
             border-color: var(--accent-light);
-            transform: translateY(-2px);
+        }
+
+        .creation-card:active {
+            border-color: var(--accent-light-hover);
+            background: #1e1924;
+            transform: scale(0.98);
         }
 
         .card-title { font-size: 15px; font-weight: bold; color: var(--text-bright); }
@@ -174,18 +188,25 @@
         .tag-flip-pill { background: #4a2323; border-color: #6e3333; color: #ff8fc0; }
 
         .view-h1 { font-size: 1.6rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
-        .view-h2 { font-size: 1.4rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
+        .view-h2 { font-size: 1.1rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); text-transform: uppercase; letter-spacing: 0.5px; }
         .view-h3 { font-size: 1.2rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
         .view-h4 { font-size: 1.0rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
         .view-h5 { font-size: 0.9rem; color: var(--text-main); margin-top: var(--space-md); margin-bottom: var(--space-xs); text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
         
-        .view-text { font-size: 14px; color: var(--text-main); line-height: 1.6; margin: 0; }
+        .view-text { font-size: 14px; color: var(--text-main); line-height: 1.5; margin: 0; }
         .view-note { font-style: italic; color: var(--text-muted); padding-left: var(--space-sm); border-left: 2px solid var(--text-muted); margin: 0; }
 
         .parsed-link { color: var(--accent-light); text-decoration: none; border-bottom: 1px dashed var(--accent-dark-hover); transition: color var(--transition-fast); }
         .parsed-link:hover { color: var(--accent-light-hover); border-bottom-style: solid; }
         .parsed-img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: var(--border-width) solid var(--border-color); margin: var(--space-sm) 0; display: block; }
-        .parsed-embed-frame { width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-lg); border: var(--border-width) solid var(--border-color); margin: var(--space-sm) 0; background: var(--bg-color); }
+        
+        .overflow-scroller {
+            width: 100%;
+            overflow-x: auto;
+        }
+        .overflow-scroller::-webkit-scrollbar { height: 6px; }
+        .overflow-scroller::-webkit-scrollbar-track { background: var(--bg-color); }
+        .overflow-scroller::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: var(--radius-sm); }
 
         .connected-chain-group {
             display: flex;
@@ -241,7 +262,7 @@
         .badge-type-c { background: var(--mc-chain); color: #fff; }
         .badge-cond-un { background: #3c3c4a; color: var(--text-main); }
         .badge-cond-cn { background: #ffffff; color: #000; font-weight: 900; }
-        .badge-active-aa { background: #2a4f32; color: #7cfc00; border: 1px solid #3b6e47; }
+        .badge-active-aa { background: var(--success-bg); color: #7cfc00; border: 1px solid var(--success-border); }
         .badge-active-nr { background: #4a2323; color: #ff6b6b; border: 1px solid #6e3333; }
         .badge-tick { background: var(--box-bg); border: var(--border-width) solid var(--border-color); color: var(--text-bright); font-family: monospace; min-width: 28px; }
 
@@ -275,6 +296,7 @@
             transition: var(--transition-fast);
         }
         .icon-copy-action-btn:hover { border-color: var(--accent-light); background: var(--container-bg); }
+        .icon-copy-action-btn:active { transform: scale(0.92); }
         .icon-copy-action-btn img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
 
         .npc-compound-card {
@@ -356,19 +378,66 @@
             transition: var(--transition-fast);
         }
         .btn:hover { background: var(--accent-dark-hover); }
+        .btn:active { transform: scale(0.96); background: #1e1924; }
         .btn-secondary { background: var(--box-bg); border: var(--border-width) solid var(--border-color); color: var(--text-main); }
         .btn-secondary:hover { border-color: var(--accent-light); color: var(--text-bright); }
-        .btn:disabled { background: var(--border-color); color: var(--text-muted); cursor: not-allowed; }
+        .btn:disabled { background: var(--border-color); color: var(--text-muted); cursor: not-allowed; transform: none !important; }
 
-        .footer { margin-top: 32px; padding-bottom: 16px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; width: 100%; }
-        .footer-title { font-size: 12px; color: var(--text-muted); opacity: 0.75; letter-spacing: 0.5px; }
-        .footer-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-        .footer-links a { display: flex; align-items: center; gap: 6px; color: var(--accent-light); text-decoration: none; font-size: 13px; opacity: 0.85; transition: opacity var(--transition-fast), color var(--transition-fast); }
-        .footer-links a:hover { color: var(--accent-light-hover); opacity: 1; }
-        .footer-links img { width: 16px; height: 16px; filter: brightness(0) invert(1); opacity: 0.9; }
-        .footer-links a.kofi { color: #ff5fa2; font-weight: 500; }
-        .footer-links a.kofi:hover { color: #ff8fc0; }
-        .footer-links a.kofi img { width: 20px; height: 20px; filter: brightness(0) invert(1); opacity: 0.95; }
+        .footer {
+            margin-top: var(--space-2xl, 32px);
+            padding-bottom: var(--space-lg, 16px);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm, 8px);
+            align-items: center;
+            width: 100%;
+        }
+        .footer-title {
+            font-size: 12px;
+            color: var(--text-muted, #5a5a66);
+            opacity: 0.75;
+            letter-spacing: 0.5px;
+        }
+        .footer-links {
+            display: flex;
+            gap: var(--space-md, 12px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .footer-links a {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent-light, #A77A99);
+            text-decoration: none;
+            font-size: 13px;
+            opacity: 0.85;
+            transition: opacity var(--transition-fast, 0.15s), color var(--transition-fast, 0.15s);
+        }
+        .footer-links a:hover {
+            color: var(--accent-light-hover, #c5a4bc);
+            opacity: 1;
+        }
+        .footer-links img {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+        .footer-links a.kofi {
+            color: #ff5fa2;
+            font-weight: 500;
+        }
+        .footer-links a.kofi:hover {
+            color: #ff8fc0;
+        }
+        .footer-links a.kofi img {
+            width: 20px;
+            height: 20px;
+            filter: brightness(0) invert(1);
+            opacity: 0.95;
+        }
     </style>
 </head>
 <body>
@@ -388,13 +457,13 @@
         <div class="footer">
             <div class="footer-title">By Nako Hikari</div>
             <div class="footer-links">
-                <a href="https://github.com/nako-hikari/" target="_blank">
+                <a href="https://github.com/nako-hikari/" target="_blank" class="social">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub"> GitHub
                 </a>
-                <a href="https://m.youtube.com/@NaCryst" target="_blank">
+                <a href="https://m.youtube.com/@NaCryst" target="_blank" class="social">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"> YouTube
                 </a>
-                <a href="https://www.tiktok.com/@nako_hikari_mc" target="_blank">
+                <a href="https://www.tiktok.com/@nako_hikari_mc" target="_blank" class="social">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok"> TikTok
                 </a>
                 <a href="https://ko-fi.com/arialicee" target="_blank" class="social kofi">
@@ -427,11 +496,12 @@
 
                 const fetchPromises = targetFiles.map(async (item) => {
                     try {
-                        const fileContentResponse = await fetch(`commands/${item.name}`);
+                        // FIXED FETCH LOCATION: Pull directly from raw GitHub user content to prevent 404 subdirectory path errors
+                        const fileContentResponse = await fetch(`https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/${item.name}`);
                         if (!fileContentResponse.ok) throw new Error();
                         const data = await fileContentResponse.text();
                         
-                        // Default title fallback cleaning logic: Strips extension and fixes case (e.g., test.txt -> Test)
+                        // Clean file title view formatting (test.txt -> Test)
                         let cleanName = item.name.substring(0, item.name.lastIndexOf('.')).replace(/_/g, ' ');
                         let title = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
                         
@@ -449,7 +519,10 @@
 
                         return { file: item.name, parsedTitle: title, parsedDesc: desc, parsedTags: tags, rawPayload: data };
                     } catch (err) {
-                        return { file: item.name, parsedTitle: item.name, parsedDesc: "Failed to download asset.", parsedTags: [], rawPayload: null };
+                        // Fallback cleanly if an individual asset calculation goes wrong
+                        let rawTitle = item.name.substring(0, item.name.lastIndexOf('.'));
+                        let cleanFallbackTitle = rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
+                        return { file: item.name, parsedTitle: cleanFallbackTitle, parsedDesc: "Failed to download asset.", parsedTags: [], rawPayload: null };
                     }
                 });
 
@@ -464,7 +537,6 @@
             const currentHash = decodeURIComponent(window.location.hash.replace('#', '')).trim().toLowerCase();
             
             if (currentHash && cachedParsedIndexDataset.length > 0) {
-                // FIXED ROUTER ROUTING LOGIC: Matches against title, original file name, or filename without .txt extension safely
                 const searchMatch = cachedParsedIndexDataset.find(c => {
                     const cleanFileName = c.file.substring(0, c.file.lastIndexOf('.')).toLowerCase();
                     return c.parsedTitle.toLowerCase() === currentHash || 
@@ -472,12 +544,48 @@
                            cleanFileName === currentHash;
                 });
                 
-                if (searchMatch && searchMatch.rawPayload) {
-                    renderFocusedCreationDisplayPage(searchMatch);
-                    return;
+                // If it exists but payload is missing because of an earlier download failure, try to live refetch it on demand
+                if (searchMatch) {
+                    if (searchMatch.rawPayload) {
+                        renderFocusedCreationDisplayPage(searchMatch);
+                        return;
+                    } else {
+                        attemptLiveOnDemandAssetRecovery(searchMatch);
+                        return;
+                    }
                 }
             }
             renderGlobalDashboardHomeGrid();
+        }
+
+        async function attemptLiveOnDemandAssetRecovery(matchedObject) {
+            const canvas = document.getElementById('app-view-router-canvas');
+            canvas.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: var(--space-2xl);">Fetching content payload on-demand...</div>`;
+            try {
+                const res = await fetch(`https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/${matchedObject.file}`);
+                if (!res.ok) throw new Error();
+                const textData = await res.vartext() || await res.text();
+                matchedObject.rawPayload = textData;
+                
+                // Re-parse structural details 
+                const segments = textData.split('\n\n');
+                if (segments[0]) {
+                    segments[0].split('\n').forEach(line => {
+                        if (line.startsWith('TITLE:')) matchedObject.parsedTitle = line.replace('TITLE:', '').trim();
+                        if (line.startsWith('DESC:')) matchedObject.parsedDesc = line.replace('DESC:', '').trim();
+                        if (line.startsWith('TAG:')) matchedObject.parsedTags = line.replace('TAG:', '').split(',').map(t => t.trim());
+                    });
+                }
+                renderFocusedCreationDisplayPage(matchedObject);
+            } catch (e) {
+                canvas.innerHTML = `
+                    <div style="text-align: center; padding: var(--space-2xl);">
+                        <p style="color: #ff6b6b; font-weight: bold;">Could not download ${matchedObject.file}</p>
+                        <p style="color: var(--text-muted); font-size: 13px;">Verify the file path exists exactly on your main branch.</p>
+                        <button class="btn btn-secondary" onclick="routeReturnHomeDashboard()">Back to Dashboard</button>
+                    </div>
+                `;
+            }
         }
 
         function renderGlobalDashboardHomeGrid() {
@@ -499,13 +607,12 @@
             dataset.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'creation-card';
-                // FIXED ONCLICK HASH BINDING: Uses the exact cleaned title to link beautifully
                 card.onclick = () => { window.location.hash = encodeURIComponent(item.parsedTitle); };
                 let tagPillsStr = item.parsedTags.map(t => `<span class="tag-pill">${t}</span>`).join(' ');
 
                 card.innerHTML = `
                     <div class="card-title">${escapeHtmlEntities(item.parsedTitle)}</div>
-                    <div class="card-desc">${escapeHtmlEntities(item.parsedDesc)}</div>
+                    <div class="card-desc" style="${item.rawPayload ? '' : 'color: #ff6b6b;'}">${escapeHtmlEntities(item.parsedDesc)}</div>
                     <div class="tag-pill-container" style="margin-top: var(--space-xs);">${tagPillsStr}</div>
                 `;
                 gridContainer.appendChild(card);
@@ -530,15 +637,6 @@
             let clean = escapeHtmlEntities(rawTextString);
             clean = clean.replace(/\[link\]\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="parsed-link">$1</a>');
             clean = clean.replace(/\[img\]\((.*?)\)/g, '<img src="$1" class="parsed-img" alt="Embedded Source Asset">');
-            clean = clean.replace(/\[Embbed\]\((.*?)\)/g, function(match, url) {
-                let embeddedTargetUrl = url;
-                if (url.includes('youtube.com/watch?v=')) {
-                    embeddedTargetUrl = url.replace('watch?v=', 'embed/');
-                } else if (url.includes('youtu.be/')) {
-                    embeddedTargetUrl = url.replace('youtu.be/', 'youtube.com/embed/');
-                }
-                return `<iframe class="parsed-embed-frame" src="${embeddedTargetUrl}" allowfullscreen></iframe>`;
-            });
             return clean;
         }
 
@@ -573,7 +671,6 @@
 
             let activeChainStackElement = null;
             let currentChainRowIndex = 0;
-            let hasNpcBlockIncluded = false;
 
             const segments = creationObject.rawPayload.split('\n\n');
 
@@ -629,7 +726,6 @@
                 else if (baseLine.startsWith('CMD:NPC') || baseLine.startsWith('CMD:CHAT')) {
                     activeChainStackElement = null;
                     const isNpcType = baseLine.startsWith('CMD:NPC');
-                    if (isNpcType) hasNpcBlockIncluded = true;
 
                     let npcNodeWrapper = document.createElement('div');
                     npcNodeWrapper.className = 'npc-compound-card';
@@ -637,8 +733,7 @@
                     let assetTexture = document.createElement('img');
                     assetTexture.className = 'block-face-texture-node';
                     assetTexture.src = isNpcType ? 'assets/images/npc.png' : 'assets/images/chat.png';
-                    assetTexture.title = isNpcType ? 'NPC' : 'Chat';
-                    assetTexture.alt = isNpcType ? 'NPC' : 'Chat';
+                    assetTexture.onerror = function() { this.src = 'https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/assets/images/npc.png'; };
 
                     let indexingLabel = document.createElement('div');
                     indexingLabel.className = 'view-row-idx';
@@ -657,11 +752,11 @@
 
                     let functionalCopyBtn = document.createElement('div');
                     functionalCopyBtn.className = 'icon-copy-action-btn';
-                    functionalCopyBtn.innerHTML = `<img src="assets/images/copy.png" alt="Copy Box">`;
+                    functionalCopyBtn.innerHTML = `<img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/assets/copy.png" alt="Copy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'white\'><path d=\'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z\'/></svg>'">`;
                     functionalCopyBtn.onclick = () => {
                         const compoundingTextBuffer = macroPayloadLines.join('\n');
                         navigator.clipboard.writeText(compoundingTextBuffer);
-                        functionalCopyBtn.style.borderColor = '#3b6e47';
+                        functionalCopyBtn.style.borderColor = 'var(--success-border)';
                         setTimeout(() => { functionalCopyBtn.style.borderColor = ''; }, 800);
                     };
 
@@ -709,7 +804,7 @@
 
                         rowNode.innerHTML = `
                             <div class="view-row-idx">${currentChainRowIndex}</div>
-                            <img src="${blockGraphicSrc}" class="block-face-texture-node" title="${modeToken === 'I' ? 'Impulse' : modeToken === 'R' ? 'Repeat' : 'Chain'}" alt="Block Graphic">
+                            <img src="${blockGraphicSrc}" class="block-face-texture-node" onerror="this.style.display='none';" alt="">
                             <div class="meta-badge-stack">
                                 <span class="meta-badge badge-type-${modeToken.toLowerCase()}">${modeToken}</span>
                                 <span class="meta-badge ${condToken.startsWith('C') ? 'badge-cond-cn' : 'badge-cond-un'}">${condToken.startsWith('C') ? 'CN' : 'UN'}</span>
@@ -717,7 +812,7 @@
                                 <span class="meta-badge badge-tick">${tickToken}</span>
                             </div>
                             <div class="view-cmd-payload-box">${escapeHtmlEntities(commandStringPayload)}</div>
-                            <div class="icon-copy-action-btn" onclick="copyInlinePayloadRowText(this)"><img src="assets/images/copy.png" alt="Copy"></div>
+                            <div class="icon-copy-action-btn" onclick="copyInlinePayloadRowText(this)"><img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/assets/copy.png" alt="Copy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'white\'><path d=\'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z\'/></svg>'"></div>
                         `;
                         activeChainStackElement.appendChild(rowNode);
                     }
@@ -748,7 +843,7 @@
                 if (checkFileResponse.ok) {
                     structureDeck.innerHTML = `
                         <div class="structure-preview-meta">
-                            <img src="assets/images/structure.png" class="structure-img-frame" alt="Structure Frame">
+                            <img src="assets/images/structure.png" class="structure-img-frame" onerror="this.src='https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/assets/images/structure.png'; this.onerror=null;" alt="Structure Frame">
                             <div>
                                 <div class="structure-label-title">${escapeHtmlEntities(pureBaseName)}.mcstructure</div>
                                 <div class="structure-label-sub">In-Game Block Structure Data</div>
@@ -762,7 +857,7 @@
             } catch (e) {
                 structureDeck.innerHTML = `
                     <div class="structure-preview-meta">
-                        <img src="assets/images/structure/un" class="structure-img-frame" alt="Unavailable Frame" onerror="this.src='assets/images/structure.png'; this.style.opacity='0.3';">
+                        <img src="assets/images/structure.png" class="structure-img-frame" style="opacity: 0.3;" onerror="this.src='https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/assets/images/structure.png'; this.onerror=null;" alt="">
                         <div>
                             <div class="structure-label-title" style="color: var(--text-muted);">Structure Unavailable</div>
                             <div class="structure-label-sub">No matching model structure found for deployment</div>
@@ -784,7 +879,7 @@
         function copyInlinePayloadRowText(actionButtonNode) {
             const contentString = actionButtonNode.parentElement.querySelector('.view-cmd-payload-box').innerText;
             navigator.clipboard.writeText(contentString);
-            actionButtonNode.style.borderColor = '#3b6e47';
+            actionButtonNode.style.borderColor = 'var(--success-border)';
             setTimeout(() => { actionButtonNode.style.borderColor = ''; }, 800);
         }
 

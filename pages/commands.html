@@ -192,10 +192,10 @@
 .view-cmd-row {
     display: flex;
     align-items: center;
-    padding: 0 var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
     gap: var(--space-sm);
     position: relative;
-    height: 40px;
+    min-height: 40px;
 }
 
 
@@ -270,15 +270,50 @@
             background: var(--bg-color);
             border: var(--border-width) solid var(--border-color);
             color: #c5a4bc;
-            padding: 6px var(--space-sm);
+            padding: var(--space-sm);
             border-radius: var(--radius-sm);
             font-size: 12.5px;
             white-space: nowrap;
             overflow-x: auto;
-            height: 36px;
+            line-height: 1.4;
+            display: block;
+            min-width: 0;
+        }
+
+        .enable-word-wrap .view-cmd-payload-box {
+            white-space: pre-wrap !important;
+            word-break: break-all !important;
+            overflow-x: hidden !important;
+        }
+
+        .enable-word-wrap-npc .npc-scroller-stack {
+            gap: var(--space-xs);
+        }
+
+        .enable-word-wrap-npc .npc-line-box {
+            white-space: pre-wrap !important;
+            word-break: break-all !important;
+            margin-bottom: 0;
+        }
+
+        .toggle-wrap-container {
             display: flex;
             align-items: center;
+            gap: var(--space-xs);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-main);
+            user-select: none;
+            cursor: pointer;
         }
+        
+        .toggle-wrap-container input {
+            cursor: pointer;
+            margin: 0;
+        }
+        
+
 
         .icon-copy-action-btn {
             width: 36px;
@@ -309,11 +344,12 @@
             min-height: 40px;
         }
 
-        .npc-scroller-stack {
+                .npc-scroller-stack {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: var(--space-xs);
+            min-width: 0;
         }
         .npc-line-box {
             font-family: "SF Mono", ui-monospace, monospace;
@@ -323,10 +359,10 @@
             padding: var(--space-sm);
             border-radius: var(--radius-sm);
             font-size: 12.5px;
-            min-height: 32px;
-            white-space: pre-wrap;
-            word-break: break-all;
+            white-space: pre;
+            overflow-x: auto;
         }
+
         .npc-router-explainer-tag {
             font-family: monospace;
             font-size: 11px;
@@ -615,12 +651,54 @@
             shareButtonEl.className = 'btn';
             shareButtonEl.innerText = 'Share';
             shareButtonEl.onclick = () => {
-                /* FIXED: Uses raw filename parameter string token for persistent deep sharing link URLs */
                 const linkString = `${window.location.origin}${window.location.pathname}#${encodeURIComponent(creationObject.file)}`;
                 navigator.clipboard.writeText(linkString);
                 shareButtonEl.innerText = 'Copied!';
                 setTimeout(() => { shareButtonEl.innerText = 'Share'; }, 1200);
             };
+
+            let wrapToggleLabel = document.createElement('label');
+            wrapToggleLabel.className = 'toggle-wrap-container';
+            wrapToggleLabel.innerHTML = `<input type="checkbox" id="global-word-wrap-toggle"> Word Wrap`;
+            
+            wrapToggleLabel.querySelector('input').onchange = (e) => {
+                const canvasElement = document.getElementById('app-view-router-canvas');
+                if (e.target.checked) {
+                    canvasElement.classList.add('enable-word-wrap');
+                    canvasElement.classList.add('enable-word-wrap-npc');
+                    
+                    document.querySelectorAll('.npc-scroller-stack').forEach(stack => {
+                        const rawText = stack.getAttribute('data-raw-payload') || '';
+                        if (!rawText) return;
+                        stack.innerHTML = '';
+                        rawText.split('\n').forEach(line => {
+                            let lineRow = document.createElement('div');
+                            lineRow.className = 'npc-line-box';
+                            lineRow.innerText = line;
+                            stack.appendChild(lineRow);
+                        });
+                    });
+                } else {
+                    canvasElement.classList.remove('enable-word-wrap');
+                    canvasElement.classList.remove('enable-word-wrap-npc');
+                    
+                    document.querySelectorAll('.npc-scroller-stack').forEach(stack => {
+                        const rawText = stack.getAttribute('data-raw-payload') || '';
+                        if (!rawText) return;
+                        stack.innerHTML = '';
+                        let lineRow = document.createElement('div');
+                        lineRow.className = 'npc-line-box';
+                        lineRow.innerText = rawText;
+                        stack.appendChild(lineRow);
+                    });
+                }
+            };
+
+
+            let rightActionGroup = document.createElement('div');
+            rightActionGroup.style.cssText = 'display: flex; align-items: center; gap: var(--space-md); flex-shrink: 0;';
+            rightActionGroup.appendChild(wrapToggleLabel);
+            rightActionGroup.appendChild(shareButtonEl);
 
             let tagsContainer = document.createElement('div');
             tagsContainer.className = 'tag-pill-container';
@@ -705,12 +783,14 @@
                     textBlockContainer.className = 'npc-scroller-stack';
 
                     const macroPayloadLines = lines.slice(1);
-                    macroPayloadLines.forEach(payloadLine => {
-                        let lineRow = document.createElement('div');
-                        lineRow.className = 'npc-line-box';
-                        lineRow.innerText = payloadLine;
-                        textBlockContainer.appendChild(lineRow);
-                    });
+                    const joinedPayload = macroPayloadLines.join('\n');
+                    textBlockContainer.setAttribute('data-raw-payload', joinedPayload);
+                    
+                    let lineRow = document.createElement('div');
+                    lineRow.className = 'npc-line-box';
+                    lineRow.innerText = joinedPayload;
+                    textBlockContainer.appendChild(lineRow);
+
 
                     let functionalCopyBtn = document.createElement('div');
                     functionalCopyBtn.className = 'icon-copy-action-btn';
@@ -732,7 +812,7 @@
                         let dynamicExplainerLink = document.createElement('div');
                         dynamicExplainerLink.className = 'npc-router-explainer-tag';
                         dynamicExplainerLink.innerText = '--- click here to know how to use NPC as setup ---';
-                        dynamicExplainerLink.onclick = () => { window.location.href = 'npc-setup.html'; };
+                        dynamicExplainerLink.onclick = () => { window.location.href = 'pages/npc-setup.md'; };
                         elementsWrapper.appendChild(dynamicExplainerLink);
                     }
                 }
@@ -784,8 +864,9 @@
             });
 
             if (headerMetaContainer.children.length > 0) actionLayoutWrapper.appendChild(headerMetaContainer);
-            actionLayoutWrapper.appendChild(shareButtonEl);
+            actionLayoutWrapper.appendChild(rightActionGroup);
             container.appendChild(actionLayoutWrapper);
+
 
             if (tagsContainer.children.length > 0) container.appendChild(tagsContainer);
             if (headerMetaContainer.children.length > 0 || tagsContainer.children.length > 0) {

@@ -6,6 +6,7 @@
     <title>Command Block Creation</title>
     <style>
         :root {
+            color-scheme: light dark;
             --bg-color: #0e0e11;
             --container-bg: #18181f;
             --input-bg: #0f0f12;
@@ -18,12 +19,10 @@
             --text-muted: #5a5a66;
             --text-bright: #ffffff;
             --border-color: #2d2d38;
-            --success-bg: #2a4f32;
             --success-border: #3b6e47;
 
-            --mc-impulse: #d47c34;
-            --mc-repeat: #7b4282;
-            --mc-chain: #2b8c83;
+            /* Dedicated Tooltip Purple Text Definition */
+            --tooltip-purple: #ffffff;
 
             --space-xs: 4px;
             --space-sm: 8px;
@@ -40,13 +39,16 @@
             --shadow-deep: 0 6px 16px rgba(0, 0, 0, 0.6);
             --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.3);
             --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
             -webkit-tap-highlight-color: transparent;
             box-sizing: border-box;
         }
+        
+        img {
+    color-scheme: only light !important;
+}
 
         body {
             background: var(--bg-color);
@@ -59,7 +61,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden;
         }
 
         @media (max-width: 600px) {
@@ -91,7 +92,6 @@
         h1 {
             font-size: 1.5rem;
             font-weight: 600;
-            line-height: 1.3;
             color: var(--text-bright);
             margin: 0;
             cursor: pointer;
@@ -109,16 +109,9 @@
             border-radius: var(--radius-lg);
             padding: var(--space-md) var(--space-lg);
             color: var(--text-bright);
-            font-family: "Courier New", Courier, monospace;
             font-size: 14px;
             box-shadow: var(--shadow-soft);
             outline: none;
-            transition: var(--transition-fast);
-        }
-
-        .search-box:focus { 
-            border-color: var(--accent-light);
-            box-shadow: 0 0 0 2px rgba(167, 122, 153, 0.2);
         }
 
         .creation-grid {
@@ -140,15 +133,8 @@
             gap: var(--space-xs);
         }
 
-        .creation-card:hover {
-            border-color: var(--accent-light);
-        }
-
-        .creation-card:active {
-            border-color: var(--accent-light-hover);
-            background: #1e1924;
-            transform: scale(0.98);
-        }
+        .creation-card:hover { border-color: var(--accent-light); }
+        .creation-card:active { transform: scale(0.98); }
 
         .card-title { font-size: 15px; font-weight: bold; color: var(--text-bright); }
         .card-desc { font-size: 13px; color: var(--text-main); flex: 1; }
@@ -189,102 +175,114 @@
 
         .view-h1 { font-size: 1.6rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
         .view-h2 { font-size: 1.1rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); text-transform: uppercase; letter-spacing: 0.5px; }
-        .view-h3 { font-size: 1.2rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
-        .view-h4 { font-size: 1.0rem; color: var(--text-bright); font-weight: 600; margin-top: var(--space-md); margin-bottom: var(--space-xs); }
-        .view-h5 { font-size: 0.9rem; color: var(--text-main); margin-top: var(--space-md); margin-bottom: var(--space-xs); text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
-        
         .view-text { font-size: 14px; color: var(--text-main); line-height: 1.5; margin: 0; }
         .view-note { font-style: italic; color: var(--text-muted); padding-left: var(--space-sm); border-left: 2px solid var(--text-muted); margin: 0; }
 
-        .parsed-link { color: var(--accent-light); text-decoration: none; border-bottom: 1px dashed var(--accent-dark-hover); transition: color var(--transition-fast); }
-        .parsed-link:hover { color: var(--accent-light-hover); border-bottom-style: solid; }
-        .parsed-img { max-width: 100%; height: auto; border-radius: var(--radius-md); border: var(--border-width) solid var(--border-color); margin: var(--space-sm) 0; display: block; }
-        
-        .overflow-scroller {
-            width: 100%;
-            overflow-x: auto;
-        }
-        .overflow-scroller::-webkit-scrollbar { height: 6px; }
-        .overflow-scroller::-webkit-scrollbar-track { background: var(--bg-color); }
-        .overflow-scroller::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: var(--radius-sm); }
-
-        .connected-chain-group {
+                .connected-chain-group {
             display: flex;
             flex-direction: column;
             background: var(--input-bg);
             border: var(--border-width) solid var(--border-color);
             border-radius: var(--radius-md);
-            overflow: hidden;
+            overflow: visible;
             margin: var(--space-sm) 0;
+            padding: 0;
         }
 
-        .view-cmd-row {
-            display: flex;
-            align-items: center;
-            padding: var(--space-xs);
-            gap: var(--space-sm);
-            border-bottom: var(--border-width) solid var(--border-color);
-            position: relative;
-        }
-        .connected-chain-group .view-cmd-row:last-child { border-bottom: none; }
+.view-cmd-row {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-sm);
+    gap: var(--space-sm);
+    position: relative;
+    height: 40px;
+}
 
-        .view-cmd-row.color-i { background-color: rgba(212, 124, 52, 0.05); border-left: 4px solid var(--mc-impulse); }
-        .view-cmd-row.color-r { background-color: rgba(123, 66, 130, 0.05); border-left: 4px solid var(--mc-repeat); }
-        .view-cmd-row.color-c { background-color: rgba(43, 140, 131, 0.05); border-left: 4px solid var(--mc-chain); }
-        .view-cmd-row.cond-border { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15); }
 
-        .view-row-idx { font-family: monospace; font-weight: bold; width: 20px; text-align: center; color: var(--text-muted); font-size: 11px; }
+        .view-row-idx { font-family: monospace; font-weight: bold; width: 22px; text-align: center; color: var(--text-muted); font-size: 12px; }
         
+            .block-interactive-wrapper {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+
         .block-face-texture-node {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             object-fit: contain;
             image-rendering: pixelated;
             flex-shrink: 0;
+            z-index: 2;
+            transition: transform var(--transition-fast), filter var(--transition-fast);
+        }
+        .block-interactive-wrapper:hover .block-face-texture-node {
+            filter: brightness(1.25);
         }
 
-        .meta-badge-stack { display: flex; gap: 4px; flex-shrink: 0; user-select: none; }
-        .meta-badge {
-            font-size: 10px;
-            font-weight: 800;
-            padding: 3px var(--space-xs);
+        /* METADATA POPUP TOOLTIP DEFINITION */
+        .block-meta-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #101015;
+            border: 2px solid #2d2d3c;
             border-radius: var(--radius-sm);
-            text-align: center;
-            min-width: 26px;
-            height: 22px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            padding: 8px 12px;
+            color: var(--tooltip-purple); /* Custom Purple Setting */
+            font-family: "SF Mono", ui-monospace, monospace;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 1.4;
+            white-space: pre;
+            text-align: left;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 99;
+            box-shadow: 0 var(--space-sm) var(--space-xl) rgba(0,0,0,0.8);
+            transition: opacity 0.15s ease, transform 0.15s ease;
         }
-
-        .badge-type-i { background: var(--mc-impulse); color: #fff; }
-        .badge-type-r { background: var(--mc-repeat); color: #fff; }
-        .badge-type-c { background: var(--mc-chain); color: #fff; }
-        .badge-cond-un { background: #3c3c4a; color: var(--text-main); }
-        .badge-cond-cn { background: #ffffff; color: #000; font-weight: 900; }
-        .badge-active-aa { background: var(--success-bg); color: #7cfc00; border: 1px solid var(--success-border); }
-        .badge-active-nr { background: #4a2323; color: #ff6b6b; border: 1px solid #6e3333; }
-        .badge-tick { background: var(--box-bg); border: var(--border-width) solid var(--border-color); color: var(--text-bright); font-family: monospace; min-width: 28px; }
+        .block-meta-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #2d2d3c;
+        }
+        .block-interactive-wrapper:hover .block-meta-tooltip,
+        .block-interactive-wrapper:focus-within .block-meta-tooltip {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) scale(1);
+        }
 
         .view-cmd-payload-box {
             flex: 1;
-            font-family: "Courier New", Courier, monospace;
+            font-family: "SF Mono", ui-monospace, monospace;
             background: var(--bg-color);
             border: var(--border-width) solid var(--border-color);
-            color: #e5c07b;
+            color: #c5a4bc;
             padding: 6px var(--space-sm);
             border-radius: var(--radius-sm);
             font-size: 12.5px;
             white-space: nowrap;
             overflow-x: auto;
-            height: 32px;
+            height: 36px;
             display: flex;
             align-items: center;
         }
 
         .icon-copy-action-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             background: var(--box-bg);
             border: var(--border-width) solid var(--border-color);
             border-radius: var(--radius-sm);
@@ -296,19 +294,21 @@
             transition: var(--transition-fast);
         }
         .icon-copy-action-btn:hover { border-color: var(--accent-light); background: var(--container-bg); }
-        .icon-copy-action-btn:active { transform: scale(0.92); }
-        .icon-copy-action-btn img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
+        .icon-copy-action-btn:active { transform: scale(0.9); }
+        .icon-copy-action-btn img { width: 16px; height: 16px; image-rendering: pixelated; }
 
-        .npc-compound-card {
+                .npc-compound-card {
             background: var(--input-bg);
             border: var(--border-width) solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: var(--space-md);
+            padding: var(--space-xs) var(--space-sm);
             display: flex;
-            gap: var(--space-md);
+            gap: var(--space-sm);
             align-items: center;
             margin: var(--space-sm) 0;
+            min-height: 40px;
         }
+
         .npc-scroller-stack {
             flex: 1;
             display: flex;
@@ -316,10 +316,10 @@
             gap: var(--space-xs);
         }
         .npc-line-box {
-            font-family: "Courier New", Courier, monospace;
+            font-family: "SF Mono", ui-monospace, monospace;
             background: var(--bg-color);
             border: var(--border-width) solid var(--border-color);
-            color: #e5c07b;
+            color: #c5a4bc;
             padding: var(--space-sm);
             border-radius: var(--radius-sm);
             font-size: 12.5px;
@@ -337,7 +337,6 @@
             display: block;
             margin-top: -4px;
             margin-bottom: var(--space-md);
-            transition: color var(--transition-fast);
         }
         .npc-router-explainer-tag:hover { color: var(--accent-light); }
 
@@ -378,66 +377,32 @@
             transition: var(--transition-fast);
         }
         .btn:hover { background: var(--accent-dark-hover); }
-        .btn:active { transform: scale(0.96); background: #1e1924; }
+        .btn:active { transform: scale(0.96); }
         .btn-secondary { background: var(--box-bg); border: var(--border-width) solid var(--border-color); color: var(--text-main); }
         .btn-secondary:hover { border-color: var(--accent-light); color: var(--text-bright); }
-        .btn:disabled { background: var(--border-color); color: var(--text-muted); cursor: not-allowed; transform: none !important; }
+        .btn:disabled { background: var(--border-color); color: var(--text-muted); cursor: not-allowed; transform: none; }
 
-        .footer {
-            margin-top: var(--space-2xl, 32px);
-            padding-bottom: var(--space-lg, 16px);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-sm, 8px);
-            align-items: center;
-            width: 100%;
-        }
-        .footer-title {
-            font-size: 12px;
-            color: var(--text-muted, #5a5a66);
-            opacity: 0.75;
-            letter-spacing: 0.5px;
-        }
-        .footer-links {
-            display: flex;
-            gap: var(--space-md, 12px);
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .footer-links a {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--accent-light, #A77A99);
-            text-decoration: none;
-            font-size: 13px;
-            opacity: 0.85;
-            transition: opacity var(--transition-fast, 0.15s), color var(--transition-fast, 0.15s);
-        }
-        .footer-links a:hover {
-            color: var(--accent-light-hover, #c5a4bc);
-            opacity: 1;
-        }
+        .footer { margin-top: 32px; padding-bottom: 16px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; width: 100%; }
+        .footer-title { font-size: 12px; color: var(--text-muted); opacity: 0.75; letter-spacing: 0.5px; }
+        .footer-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+        .footer-links a { display: flex; align-items: center; gap: 6px; color: var(--accent-light); text-decoration: none; font-size: 13px; opacity: 0.85; }
+        .footer-links a:hover { color: var(--accent-light-hover); opacity: 1; }
         .footer-links img {
-            width: 16px;
-            height: 16px;
-            filter: brightness(0) invert(1);
-            opacity: 0.9;
-        }
-        .footer-links a.kofi {
-            color: #ff5fa2;
-            font-weight: 500;
-        }
-        .footer-links a.kofi:hover {
-            color: #ff8fc0;
-        }
+    width: 16px;
+    height: 16px;
+    opacity: 0.9;
+
+    color-scheme: dark !important;
+    filter: brightness(0) invert(1) !important;
+}
+        .footer-links a.kofi { color: #ff5fa2; font-weight: 500; }
         .footer-links a.kofi img {
-            width: 20px;
-            height: 20px;
-            filter: brightness(0) invert(1);
-            opacity: 0.95;
-        }
+    width: 20px;
+    height: 20px;
+
+    color-scheme: dark !important;
+    filter: brightness(0) invert(1) !important;
+}
     </style>
 </head>
 <body>
@@ -457,13 +422,13 @@
         <div class="footer">
             <div class="footer-title">By Nako Hikari</div>
             <div class="footer-links">
-                <a href="https://github.com/nako-hikari/" target="_blank" class="social">
+                <a href="https://github.com/nako-hikari/" target="_blank">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub"> GitHub
                 </a>
-                <a href="https://m.youtube.com/@NaCryst" target="_blank" class="social">
+                <a href="https://m.youtube.com/@NaCryst" target="_blank">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"> YouTube
                 </a>
-                <a href="https://www.tiktok.com/@nako_hikari_mc" target="_blank" class="social">
+                <a href="https://www.tiktok.com/@nako_hikari_mc" target="_blank">
                     <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok"> TikTok
                 </a>
                 <a href="https://ko-fi.com/arialicee" target="_blank" class="social kofi">
@@ -475,6 +440,7 @@
 
     <script>
         let cachedParsedIndexDataset = [];
+        const CDNBASESRC = "https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/assets/images";
 
         window.addEventListener('DOMContentLoaded', initializeApplicationRuntimePipeline);
         window.addEventListener('hashchange', readLocationHashRouteToken);
@@ -496,12 +462,10 @@
 
                 const fetchPromises = targetFiles.map(async (item) => {
                     try {
-                        // FIXED FETCH LOCATION: Pull directly from raw GitHub user content to prevent 404 subdirectory path errors
                         const fileContentResponse = await fetch(`https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/${item.name}`);
                         if (!fileContentResponse.ok) throw new Error();
                         const data = await fileContentResponse.text();
                         
-                        // Clean file title view formatting (test.txt -> Test)
                         let cleanName = item.name.substring(0, item.name.lastIndexOf('.')).replace(/_/g, ' ');
                         let title = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
                         
@@ -519,7 +483,6 @@
 
                         return { file: item.name, parsedTitle: title, parsedDesc: desc, parsedTags: tags, rawPayload: data };
                     } catch (err) {
-                        // Fallback cleanly if an individual asset calculation goes wrong
                         let rawTitle = item.name.substring(0, item.name.lastIndexOf('.'));
                         let cleanFallbackTitle = rawTitle.charAt(0).toUpperCase() + rawTitle.slice(1);
                         return { file: item.name, parsedTitle: cleanFallbackTitle, parsedDesc: "Failed to download asset.", parsedTags: [], rawPayload: null };
@@ -538,13 +501,10 @@
             
             if (currentHash && cachedParsedIndexDataset.length > 0) {
                 const searchMatch = cachedParsedIndexDataset.find(c => {
-                    const cleanFileName = c.file.substring(0, c.file.lastIndexOf('.')).toLowerCase();
-                    return c.parsedTitle.toLowerCase() === currentHash || 
-                           c.file.toLowerCase() === currentHash ||
-                           cleanFileName === currentHash;
+                    const cleanFileName = c.file.toLowerCase();
+                    return cleanFileName === currentHash || c.file.toLowerCase() === currentHash + '.txt';
                 });
                 
-                // If it exists but payload is missing because of an earlier download failure, try to live refetch it on demand
                 if (searchMatch) {
                     if (searchMatch.rawPayload) {
                         renderFocusedCreationDisplayPage(searchMatch);
@@ -564,10 +524,9 @@
             try {
                 const res = await fetch(`https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/${matchedObject.file}`);
                 if (!res.ok) throw new Error();
-                const textData = await res.vartext() || await res.text();
+                const textData = await res.text();
                 matchedObject.rawPayload = textData;
                 
-                // Re-parse structural details 
                 const segments = textData.split('\n\n');
                 if (segments[0]) {
                     segments[0].split('\n').forEach(line => {
@@ -581,7 +540,6 @@
                 canvas.innerHTML = `
                     <div style="text-align: center; padding: var(--space-2xl);">
                         <p style="color: #ff6b6b; font-weight: bold;">Could not download ${matchedObject.file}</p>
-                        <p style="color: var(--text-muted); font-size: 13px;">Verify the file path exists exactly on your main branch.</p>
                         <button class="btn btn-secondary" onclick="routeReturnHomeDashboard()">Back to Dashboard</button>
                     </div>
                 `;
@@ -607,7 +565,7 @@
             dataset.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'creation-card';
-                card.onclick = () => { window.location.hash = encodeURIComponent(item.parsedTitle); };
+                card.onclick = () => { window.location.hash = encodeURIComponent(item.file); };
                 let tagPillsStr = item.parsedTags.map(t => `<span class="tag-pill">${t}</span>`).join(' ');
 
                 card.innerHTML = `
@@ -657,7 +615,8 @@
             shareButtonEl.className = 'btn';
             shareButtonEl.innerText = 'Share';
             shareButtonEl.onclick = () => {
-                const linkString = `${window.location.origin}${window.location.pathname}#${encodeURIComponent(creationObject.parsedTitle)}`;
+                /* FIXED: Uses raw filename parameter string token for persistent deep sharing link URLs */
+                const linkString = `${window.location.origin}${window.location.pathname}#${encodeURIComponent(creationObject.file)}`;
                 navigator.clipboard.writeText(linkString);
                 shareButtonEl.innerText = 'Copied!';
                 setTimeout(() => { shareButtonEl.innerText = 'Share'; }, 1200);
@@ -671,6 +630,9 @@
 
             let activeChainStackElement = null;
             let currentChainRowIndex = 0;
+
+            const isFlippedTagActive = creationObject.parsedTags.some(tag => tag.toLowerCase() === 'flip');
+            const calculatedRotationAngle = isFlippedTagActive ? "0deg" : "180deg";
 
             const segments = creationObject.rawPayload.split('\n\n');
 
@@ -732,12 +694,12 @@
 
                     let assetTexture = document.createElement('img');
                     assetTexture.className = 'block-face-texture-node';
-                    assetTexture.src = isNpcType ? 'assets/images/npc.png' : 'assets/images/chat.png';
-                    assetTexture.onerror = function() { this.src = 'https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/assets/images/npc.png'; };
+                    assetTexture.src = isNpcType ? `${CDNBASESRC}/npc.png` : `${CDNBASESRC}/chat.png`;
 
-                    let indexingLabel = document.createElement('div');
+                                        let indexingLabel = document.createElement('div');
                     indexingLabel.className = 'view-row-idx';
                     indexingLabel.innerText = '1';
+
 
                     let textBlockContainer = document.createElement('div');
                     textBlockContainer.className = 'npc-scroller-stack';
@@ -752,7 +714,7 @@
 
                     let functionalCopyBtn = document.createElement('div');
                     functionalCopyBtn.className = 'icon-copy-action-btn';
-                    functionalCopyBtn.innerHTML = `<img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/assets/copy.png" alt="Copy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'white\'><path d=\'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z\'/></svg>'">`;
+                    functionalCopyBtn.innerHTML = `<img src="${CDNBASESRC}/copy.png" alt="Copy">`;
                     functionalCopyBtn.onclick = () => {
                         const compoundingTextBuffer = macroPayloadLines.join('\n');
                         navigator.clipboard.writeText(compoundingTextBuffer);
@@ -794,25 +756,27 @@
                         const condToken = (metaTokens[3] || 'U').toUpperCase();
                         const tickToken = metaTokens[4] || '0';
 
-                        let blockGraphicSrc = 'assets/images/chain.png';
-                        if (modeToken === 'I') blockGraphicSrc = 'assets/images/impulse.png';
-                        if (modeToken === 'R') blockGraphicSrc = 'assets/images/repeat.png';
+                        // Full Word Display Mapping Rules
+                        const fullBlockTypeName = modeToken === 'I' ? 'Impulse' : modeToken === 'R' ? 'Repeat' : 'Chain';
+                        const fullConditionText = condToken.startsWith('C') ? 'Conditional' : 'Unconditional';
+                        const fullRedstoneText = activeToken === 'AA' ? 'Always Active' : 'Needs Redstone';
+
+                        // FIXED: Matches your literal filename schema combinations (e.g., "c-un.png", "i-un.png")
+                        let filePrefix = modeToken.toLowerCase();
+                        let fileSuffix = condToken.toLowerCase().startsWith('c') ? 'cn' : 'un';
+                        let blockGraphicSrc = `${CDNBASESRC}/${filePrefix}-${fileSuffix}.png`;
 
                         let rowNode = document.createElement('div');
-                        rowNode.className = `view-cmd-row color-${modeToken.toLowerCase()}`;
-                        if (condToken.startsWith('C')) rowNode.classList.add('cond-border');
+                        rowNode.className = 'view-cmd-row';
 
                         rowNode.innerHTML = `
                             <div class="view-row-idx">${currentChainRowIndex}</div>
-                            <img src="${blockGraphicSrc}" class="block-face-texture-node" onerror="this.style.display='none';" alt="">
-                            <div class="meta-badge-stack">
-                                <span class="meta-badge badge-type-${modeToken.toLowerCase()}">${modeToken}</span>
-                                <span class="meta-badge ${condToken.startsWith('C') ? 'badge-cond-cn' : 'badge-cond-un'}">${condToken.startsWith('C') ? 'CN' : 'UN'}</span>
-                                <span class="meta-badge ${activeToken === 'AA' ? 'badge-active-aa' : 'badge-active-nr'}">${activeToken}</span>
-                                <span class="meta-badge badge-tick">${tickToken}</span>
+                            <div class="block-interactive-wrapper" tabindex="0">
+                                <img src="${blockGraphicSrc}" class="block-face-texture-node" style="transform: rotate(${calculatedRotationAngle});" alt="Block Face">
+                                <div class="block-meta-tooltip">${fullBlockTypeName}\n${fullConditionText}\n${fullRedstoneText}\nTick = ${tickToken}</div>
                             </div>
                             <div class="view-cmd-payload-box">${escapeHtmlEntities(commandStringPayload)}</div>
-                            <div class="icon-copy-action-btn" onclick="copyInlinePayloadRowText(this)"><img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/assets/copy.png" alt="Copy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'white\'><path d=\'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z\'/></svg>'"></div>
+                            <div class="icon-copy-action-btn" onclick="copyInlinePayloadRowText(this)"><img src="${CDNBASESRC}/copy.png" alt="Copy"></div>
                         `;
                         activeChainStackElement.appendChild(rowNode);
                     }
@@ -843,7 +807,7 @@
                 if (checkFileResponse.ok) {
                     structureDeck.innerHTML = `
                         <div class="structure-preview-meta">
-                            <img src="assets/images/structure.png" class="structure-img-frame" onerror="this.src='https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/assets/images/structure.png'; this.onerror=null;" alt="Structure Frame">
+                            <img src="${CDNBASESRC}/structure.png" class="structure-img-frame" alt="Structure Frame">
                             <div>
                                 <div class="structure-label-title">${escapeHtmlEntities(pureBaseName)}.mcstructure</div>
                                 <div class="structure-label-sub">In-Game Block Structure Data</div>
@@ -857,7 +821,7 @@
             } catch (e) {
                 structureDeck.innerHTML = `
                     <div class="structure-preview-meta">
-                        <img src="assets/images/structure.png" class="structure-img-frame" style="opacity: 0.3;" onerror="this.src='https://raw.githubusercontent.com/nako-hikari/nako-hikari.github.io/main/commands/assets/images/structure.png'; this.onerror=null;" alt="">
+                        <img src="${CDNBASESRC}/structure.png" class="structure-img-frame" style="opacity: 0.3;" alt="">
                         <div>
                             <div class="structure-label-title" style="color: var(--text-muted);">Structure Unavailable</div>
                             <div class="structure-label-sub">No matching model structure found for deployment</div>

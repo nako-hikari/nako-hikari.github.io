@@ -1,3 +1,7 @@
+TITLE: Xp Star Thingy
+DESC: Squeeze em
+TAG: visual
+
 H2: First do this setup ▼
 
 CMD:NPC

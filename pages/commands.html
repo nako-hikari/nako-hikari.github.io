@@ -225,6 +225,7 @@
             filter: brightness(1.25);
         }
 
+        /* METADATA POPUP TOOLTIP DEFINITION */
         .block-meta-tooltip {
             position: absolute;
             bottom: calc(100% + 8px);
@@ -837,7 +838,8 @@
 
                         const fullBlockTypeName = modeToken === 'I' ? 'Impulse' : modeToken === 'R' ? 'Repeat' : 'Chain';
                         const fullConditionText = condToken.startsWith('C') ? 'Conditional' : 'Unconditional';
-                        const fullRedstoneText = activeToken === 'AA' ? 'Always Active' : 'Needs
+                        const fullRedstoneText = activeToken === 'AA' ? 'Always Active' : 'Needs Redstone';
+
                         let filePrefix = modeToken.toLowerCase();
                         let fileSuffix = condToken.toLowerCase().startsWith('c') ? 'cn' : 'un';
                         let blockGraphicSrc = `${CDNBASESRC}/${filePrefix}-${fileSuffix}.png`;

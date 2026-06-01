@@ -225,7 +225,6 @@
             filter: brightness(1.25);
         }
 
-        /* METADATA POPUP TOOLTIP DEFINITION */
         .block-meta-tooltip {
             position: absolute;
             bottom: calc(100% + 8px);
@@ -812,7 +811,7 @@
                         let dynamicExplainerLink = document.createElement('div');
                         dynamicExplainerLink.className = 'npc-router-explainer-tag';
                         dynamicExplainerLink.innerText = '--- click here to know how to use NPC as setup ---';
-                        dynamicExplainerLink.onclick = () => { window.location.href = 'pages/npc-setup.md'; };
+                        dynamicExplainerLink.onclick = () => { window.location.href = 'npc-setup.html'; };
                         elementsWrapper.appendChild(dynamicExplainerLink);
                     }
                 }
@@ -836,12 +835,9 @@
                         const condToken = (metaTokens[3] || 'U').toUpperCase();
                         const tickToken = metaTokens[4] || '0';
 
-                        // Full Word Display Mapping Rules
                         const fullBlockTypeName = modeToken === 'I' ? 'Impulse' : modeToken === 'R' ? 'Repeat' : 'Chain';
                         const fullConditionText = condToken.startsWith('C') ? 'Conditional' : 'Unconditional';
-                        const fullRedstoneText = activeToken === 'AA' ? 'Always Active' : 'Needs Redstone';
-
-                        // FIXED: Matches your literal filename schema combinations (e.g., "c-un.png", "i-un.png")
+                        const fullRedstoneText = activeToken === 'AA' ? 'Always Active' : 'Needs
                         let filePrefix = modeToken.toLowerCase();
                         let fileSuffix = condToken.toLowerCase().startsWith('c') ? 'cn' : 'un';
                         let blockGraphicSrc = `${CDNBASESRC}/${filePrefix}-${fileSuffix}.png`;

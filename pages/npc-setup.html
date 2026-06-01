@@ -71,19 +71,8 @@
             }
         }
 
-        /* Shielding rule for all images */
         img {
             color-scheme: only light !important;
-        }
-
-        /* Border decorations restricted strictly to tutorial layout screenshots */
-        .step-item img {
-            max-width: 100%;
-            height: auto;
-            border-radius: var(--radius-md);
-            border: var(--border-width) solid var(--border-color);
-            display: block;
-            margin-top: var(--space-md);
         }
 
         .wrapper {
@@ -128,35 +117,7 @@
             transform: scale(0.98);
         }
 
-        /* Typography */
-        h1 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            line-height: 1.3;
-            color: var(--text-bright);
-            margin-bottom: var(--space-xs);
-        }
-
-        h2 {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-bright);
-            margin-top: var(--space-md);
-        }
-
-        h3 {
-            font-size: 1.1rem;
-            color: var(--accent-light);
-            font-family: ui-monospace, "SF Mono", "JetBrains Mono", monospace;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* Cards & Layout */
+        /* Unified Card Container */
         .card {
             background: var(--container-bg);
             border: var(--border-width) solid var(--border-color);
@@ -165,7 +126,7 @@
             padding: var(--space-xl);
             display: flex;
             flex-direction: column;
-            gap: var(--space-md);
+            gap: var(--space-xl);
             transition: border-color var(--transition-normal);
         }
 
@@ -173,16 +134,55 @@
             border-color: #3d3d4c;
         }
 
+        /* Headings & Text */
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--text-bright);
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-bright);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--accent-light);
+            font-family: ui-monospace, "SF Mono", "JetBrains Mono", monospace;
+            margin-bottom: var(--space-xs);
+        }
+
+        .intro-p {
+            font-size: 15px;
+            color: var(--text-main);
+        }
+
+        /* Step Grid Layout */
         .step-grid {
             display: flex;
             flex-direction: column;
-            gap: var(--space-lg);
+            gap: var(--space-xl);
         }
 
         .step-item {
             border-left: 3px solid var(--accent-dark);
             padding-left: var(--space-lg);
+        }
+
+        .step-item p {
             margin-bottom: var(--space-sm);
+        }
+
+        .step-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: var(--border-width) solid var(--border-color);
+            display: block;
+            margin-top: var(--space-md);
         }
 
         /* Code Block */
@@ -197,19 +197,34 @@
             border-radius: var(--radius-md);
             padding: var(--space-md);
             overflow-x: auto;
-            margin-top: var(--space-sm);
+            margin-top: var(--space-xs);
+            margin-bottom: var(--space-sm);
             color: var(--text-bright);
         }
 
+        /* Note Section */
         .note-box {
             background: rgba(102, 54, 87, 0.15);
             border: var(--border-width) solid var(--accent-dark);
             border-radius: var(--radius-md);
             padding: var(--space-lg);
-            margin-top: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
         }
 
-        /* Footer System Requirements */
+        .note-box h2 {
+            color: var(--text-bright);
+        }
+
+        .note-box h3 {
+            font-size: 14px;
+            color: var(--text-main);
+            font-family: inherit;
+            font-weight: normal;
+        }
+
+        /* Footer Layout Elements */
         .footer {
             margin-top: var(--space-2xl, 32px);
             padding-bottom: var(--space-lg, 16px);
@@ -284,75 +299,76 @@
             <a href="javascript:history.back()" class="back-btn">&lt;--</a>
         </div>
 
-        <header>
-            <h1>Using NPC to do setup instantly</h1>
-            <p class="subtitle">Taking advantage of NPC capabilities to skip boring, repetitive world setups.</p>
-        </header>
-
         <main class="card">
-            <h2>Like summoning a few tagged entities, placing empty command block towers, or others</h2>
-            <p>Here is how you handle the process efficiently without pasting code block by block manually:</p>
+            <header>
+                <h1>Using NPC to do setup instantly</h1>
+                <h2>like summoning a few tagged entities, placing command block tower(empty), or others</h2>
+            </header>
+
+            <p class="intro-p">taking advantage of npc capabilities to do boring setup</p>
+            <p class="intro-p">here's how you do it</p>
             
             <div class="step-grid">
                 <div class="step-item">
                     <h3>1</h3>
-                    <p>Summon an NPC using the chat bar or a standalone block:</p>
+                    <p>summon an npc using</p>
                     <pre><code>/summon npc</code></pre>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-1.png" alt="Summon NPC">
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-1.png" alt="Image">
                 </div>
 
                 <div class="step-item">
                     <h3>2</h3>
-                    <p>Interact with the spawned NPC by right clicking or holding down long press on mobile.</p>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-2.png" alt="Interact with NPC">
+                    <p>interact with the npc by right click or long press</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-2.png" alt="Image">
                 </div>
 
                 <div class="step-item">
                     <h3>3</h3>
-                    <p>Press the "Advanced Settings" button located at the bottom section.</p>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-3.png" alt="Advanced Settings">
+                    <p>press the "advance setting" button</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-3.png" alt="Image">
                 </div>
 
                 <div class="step-item">
                     <h3>4</h3>
-                    <p>Press the "Add Command" button once to spin up a terminal entry lane.</p>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-4.png" alt="Add Command">
+                    <p>press the "add command" button once</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-4.png" alt="Image">
                 </div>
 
                 <div class="step-item">
                     <h3>5</h3>
-                    <p>Paste the multiple-line setup commands inside the top entry field, then activate "Button Mode".</p>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-5.png" alt="Paste Commands">
+                    <p>paste the multiple line setup command on the top box and activate "button mode"</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-5.png" alt="Image">
                 </div>
 
                 <div class="step-item">
                     <h3>6</h3>
-                    <p>Close the current layout tab to save your lines.</p>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-6.png" alt="Close Tab">
+                    <p>close the current tab</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-6.png" alt="Image">
                 </div>
 
                 <div class="step-item">
                     <h3>7</h3>
-                    <p>Press the "Edit Dialogue" button to shift directly over into the clean dialogue UI view.</p>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-7.png" alt="Edit Dialogue">
+                    <p>press the "edit dialogue" button to open the dialogue tab</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-7.png" alt="Image">
                 </div>
 
                 <div class="step-item">
                     <h3>8</h3>
-                    <p>Press the empty layout interaction button sitting right on the bottom left corner of the UI container window.</p>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-8.png" alt="Press Button">
+                    <p>press the empty button on the bottom left corner of the ui</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-8.png" alt="Image">
                 </div>
 
                 <div class="step-item">
                     <h3>9</h3>
-                    <p>Now you're done! The custom target setup script execution is fully complete.</p>
-                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-9.png" alt="Setup complete">
+                    <p>now you're done :)</p>
+                    <p>the setup is now complete</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-9.png" alt="Image">
                 </div>
             </div>
 
             <div class="note-box">
-                <h2>Important Note!</h2>
-                <p>in my creation, maybe i include the command block towers, but they're still empty and you still need to paste it 1 by 1 yourself</p>
+                <h2>important note !</h2>
+                <h3>in my creation, maybe i include the command block towers, but they're still empty and you still need to paste it 1 by 1 yourself</h3>
             </div>
         </main>
 

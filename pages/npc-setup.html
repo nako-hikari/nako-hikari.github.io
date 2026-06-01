@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Setup via NPC Guide</title>
+    <style>
+        :root {
+            /* Nako-Default-Purple Color Palette */
+            --bg-color: #0e0e11;
+            --container-bg: #18181f;
+            --input-bg: #0f0f12;
+            --box-bg: #0f0f12;
+            --accent-dark: #663657;
+            --accent-dark-hover: #81456e;
+            --accent-light: #A77A99;
+            --accent-light-hover: #c5a4bc;
+            --text-main: #b4b4bc;
+            --text-muted: #5a5a66;
+            --text-bright: #ffffff;
+            --border-color: #2d2d38;
+            --success-bg: #2a4f32;
+            --success-border: #3b6e47;
+
+            /* Spacing & Layout Scale */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 20px;
+            --space-2xl: 24px;
+            --max-width: 900px;
+
+            /* Borders & Depth Elevation */
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --border-width: 1px;
+            --shadow-deep: 0 6px 16px rgba(0, 0, 0, 0.6);
+            --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.3);
+
+            /* Animation & Transitions */
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+            color-scheme: light dark;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--space-2xl) var(--space-lg);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: var(--space-lg) var(--space-sm);
+            }
+        }
+
+        /* Shielding rule for all images */
+        img {
+            color-scheme: only light !important;
+        }
+
+        /* Border decorations restricted strictly to tutorial layout screenshots */
+        .step-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: var(--border-width) solid var(--border-color);
+            display: block;
+            margin-top: var(--space-md);
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: var(--max-width);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+        }
+
+        /* Nav & Back Button */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--container-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-bright);
+            padding: var(--space-sm) var(--space-md);
+            text-decoration: none;
+            font-family: ui-monospace, "SF Mono", "JetBrains Mono", monospace;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border var(--transition-fast), background var(--transition-fast);
+        }
+
+        .back-btn:hover {
+            border-color: var(--accent-light);
+        }
+
+        .back-btn:active {
+            border-color: var(--accent-light-hover);
+            background: #1e1924;
+            transform: scale(0.98);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--text-bright);
+            margin-bottom: var(--space-xs);
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-bright);
+            margin-top: var(--space-md);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--accent-light);
+            font-family: ui-monospace, "SF Mono", "JetBrains Mono", monospace;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Cards & Layout */
+        .card {
+            background: var(--container-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-deep);
+            padding: var(--space-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            transition: border-color var(--transition-normal);
+        }
+
+        .card:hover {
+            border-color: #3d3d4c;
+        }
+
+        .step-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .step-item {
+            border-left: 3px solid var(--accent-dark);
+            padding-left: var(--space-lg);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* Code Block */
+        code, pre {
+            font-family: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, Monaco, Consolas, monospace;
+            font-size: 14px;
+        }
+
+        pre {
+            background: var(--box-bg);
+            border: var(--border-width) solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            overflow-x: auto;
+            margin-top: var(--space-sm);
+            color: var(--text-bright);
+        }
+
+        .note-box {
+            background: rgba(102, 54, 87, 0.15);
+            border: var(--border-width) solid var(--accent-dark);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-top: var(--space-md);
+        }
+
+        /* Footer System Requirements */
+        .footer {
+            margin-top: var(--space-2xl, 32px);
+            padding-bottom: var(--space-lg, 16px);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm, 8px);
+            align-items: center;
+            width: 100%;
+        }
+
+        .footer-title {
+            font-size: 12px;
+            color: var(--text-muted, #5a5a66);
+            opacity: 0.75;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: var(--space-md, 12px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent-light, #A77A99);
+            text-decoration: none;
+            font-size: 13px;
+            opacity: 0.85;
+            transition: opacity var(--transition-fast, 0.15s), color var(--transition-fast, 0.15s);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-light-hover, #c5a4bc);
+            opacity: 1;
+        }
+
+        .footer-links img {
+            width: 16px;
+            height: 16px;
+            opacity: 0.9;
+            color-scheme: dark !important;
+            filter: brightness(0) invert(1) !important;
+        }
+
+        .footer-links a.kofi {
+            color: #ff5fa2;
+            font-weight: 500;
+        }
+
+        .footer-links a.kofi:hover {
+            color: #ff8fc0;
+        }
+
+        .footer-links a.kofi img {
+            width: 20px;
+            height: 20px;
+            opacity: 0.95;
+            color-scheme: dark !important;
+            filter: brightness(0) invert(1) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="nav-bar">
+            <a href="javascript:history.back()" class="back-btn">&lt;--</a>
+        </div>
+
+        <header>
+            <h1>Using NPC to do setup instantly</h1>
+            <p class="subtitle">Taking advantage of NPC capabilities to skip boring, repetitive world setups.</p>
+        </header>
+
+        <main class="card">
+            <h2>Like summoning a few tagged entities, placing empty command block towers, or others</h2>
+            <p>Here is how you handle the process efficiently without pasting code block by block manually:</p>
+            
+            <div class="step-grid">
+                <div class="step-item">
+                    <h3>1</h3>
+                    <p>Summon an NPC using the chat bar or a standalone block:</p>
+                    <pre><code>/summon npc</code></pre>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-1.png" alt="Summon NPC">
+                </div>
+
+                <div class="step-item">
+                    <h3>2</h3>
+                    <p>Interact with the spawned NPC by right clicking or holding down long press on mobile.</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-2.png" alt="Interact with NPC">
+                </div>
+
+                <div class="step-item">
+                    <h3>3</h3>
+                    <p>Press the "Advanced Settings" button located at the bottom section.</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-3.png" alt="Advanced Settings">
+                </div>
+
+                <div class="step-item">
+                    <h3>4</h3>
+                    <p>Press the "Add Command" button once to spin up a terminal entry lane.</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-4.png" alt="Add Command">
+                </div>
+
+                <div class="step-item">
+                    <h3>5</h3>
+                    <p>Paste the multiple-line setup commands inside the top entry field, then activate "Button Mode".</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-5.png" alt="Paste Commands">
+                </div>
+
+                <div class="step-item">
+                    <h3>6</h3>
+                    <p>Close the current layout tab to save your lines.</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-6.png" alt="Close Tab">
+                </div>
+
+                <div class="step-item">
+                    <h3>7</h3>
+                    <p>Press the "Edit Dialogue" button to shift directly over into the clean dialogue UI view.</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-7.png" alt="Edit Dialogue">
+                </div>
+
+                <div class="step-item">
+                    <h3>8</h3>
+                    <p>Press the empty layout interaction button sitting right on the bottom left corner of the UI container window.</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-8.png" alt="Press Button">
+                </div>
+
+                <div class="step-item">
+                    <h3>9</h3>
+                    <p>Now you're done! The custom target setup script execution is fully complete.</p>
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/npc-setup/npc-setup-tut-9.png" alt="Setup complete">
+                </div>
+            </div>
+
+            <div class="note-box">
+                <h2>Important Note!</h2>
+                <p>In my creations, I might include command block towers setup through this, but they will remain empty by default. You still need to go back in and manually paste scripts into them 1 by 1 later.</p>
+            </div>
+        </main>
+
+        <div class="footer">
+            <div class="footer-title">By Nako Hikari</div>
+            <div class="footer-links">
+                <a href="https://github.com/nako-hikari/" target="_blank" class="social">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub">
+                    GitHub
+                </a>
+                <a href="https://m.youtube.com/@NaCryst" target="_blank" class="social">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube">
+                    YouTube
+                </a>
+                <a href="https://www.tiktok.com/@nako_hikari_mc" target="_blank" class="social">
+                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok">
+                    TikTok
+                </a>
+                <a href="https://ko-fi.com/arialicee" target="_blank" class="social kofi">
+                    <img src="https://raw.githubusercontent.com/nako-hikari/support-files/main/assets/kofi-icon.png" alt="Ko-fi">
+                    Support me on Ko-fi
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

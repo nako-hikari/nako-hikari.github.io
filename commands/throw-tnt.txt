@@ -8,7 +8,7 @@ All you need to do is prepare 10 command blocks
 1 repeat
 9 chain
 
-H3: ITEM
+H1: ITEM
 
 CMD:CHAT
 /give @s tnt 1 10
@@ -16,7 +16,7 @@ CMD:CHAT
 TEXT: Run this command in chat to get a tnt with the data of "10"
 The data value is needed to differentiate it with normal tnt
 
-H3: COMMAND BLOCKS
+H1: COMMAND BLOCKS
 
 CMD:R:NR:U:0
 /execute as @a[hasitem={item=tnt, location=slot.weapon.mainhand, data=10}] at @s unless entity @e[name=tnt] run summon armor_stand tnt

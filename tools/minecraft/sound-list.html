@@ -488,7 +488,9 @@
         let currentPlayBtn = null;
         let webCtx = null;
         let currentSrcNode = null;
+        let nativeAudio = null;
         const bufferCache = new Map();
+        let secretItemsCache = null;
 
         const $list = document.getElementById('list');
         const $count = document.getElementById('count');
@@ -552,6 +554,7 @@
                         <div class="action-buttons">
                             <button class="btn play ${missingAudio ? "disabled" : ""}">${missingAudio ? `<i class="white-icon">🚫</i>` : "Play"}</button>
                             <button class="btn secondary stop">Stop</button>
+                            ${!missingAudio ? `<button class="btn secondary download">DL</button>` : ''}
                         </div>
                     </div>
                 `;
@@ -562,12 +565,38 @@
             fmtPage();
         }
 
-        function applyFilter() {
-            const query = ($q.value || '').toLowerCase().trim();
+        async function applyFilter() {
+            const query = ($q.value || '').trim();
             const checked = $showMissing.checked;
 
+            if (query === "Ara Ara") {
+                if (!secretItemsCache) {
+                    try {
+                        const RAW_JSON_URL = "https://raw.githubusercontent.com/nako-hikari/support-files/main/nothing/there-is-nothing-to-see-here.json";
+                        const response = await fetch(RAW_JSON_URL);
+                        const secretData = await response.json();
+                        
+                        secretItemsCache = secretData.map(track => ({
+                            name: track.title,
+                            files: [track.url],
+                            files_missing: false,
+                            url: track.url
+                        }));
+                    } catch (err) {
+                        console.error("Failed to load secret database:", err);
+                        $list.innerHTML = `<div class="muted" style="text-align:center; padding: 20px;">Failed to load secret vault...</div>`;
+                        return;
+                    }
+                }
+                state.filtered = secretItemsCache;
+                state.page = 0;
+                render();
+                return;
+            }
+
+            const lowerQuery = query.toLowerCase();
             state.filtered = state.items.filter(it => {
-                const matchesQuery = !query || it.name.toLowerCase().includes(query);
+                const matchesQuery = !lowerQuery || it.name.toLowerCase().includes(lowerQuery);
                 const matchesMissing = checked || !it.files_missing;
                 return matchesQuery && matchesMissing;
             });
@@ -598,14 +627,19 @@
             if (!e.target.matches('.pitch')) return;
             const card = e.target.closest('.card');
             const key = card.dataset.key;
+            const rate = parseFloat(e.target.value || '1.0');
             card.querySelector('.pitch-val').textContent = e.target.value;
 
-            if (currentSrcNode && currentKey === key) {
-                currentSrcNode.playbackRate.value = parseFloat(e.target.value || '1.0');
+            if (currentKey === key) {
+                if (currentSrcNode) {
+                    currentSrcNode.playbackRate.value = rate;
+                } else if (nativeAudio) {
+                    nativeAudio.playbackRate = rate;
+                }
             }
         });
 
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', async (e) => {
             const playBtn = e.target.closest('.btn.play');
             if (playBtn) {
                 if (playBtn.classList.contains('disabled')) return;
@@ -618,6 +652,46 @@
             if (stopBtn) {
                 const card = stopBtn.closest('.card');
                 stopKey(card.dataset.key);
+                return;
+            }
+
+            const downloadBtn = e.target.closest('.btn.download');
+            if (downloadBtn) {
+                const card = downloadBtn.closest('.card');
+                const key = card.dataset.key;
+                
+                const item = state.filtered.find(it => it.name === key);
+                if (!item) return;
+
+                const url = item.url ? item.url : baseToUrl(item.files[0]);
+                if (!url) return;
+
+                downloadBtn.textContent = "⏳";
+                downloadBtn.style.pointerEvents = "none";
+
+                try {
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    const anchor = document.createElement('a');
+                    anchor.href = blobUrl;
+                    
+                    const extension = url.endsWith('.wav') ? '.wav' : '.mp3';
+                    anchor.download = `${item.name.replace(/[^a-z0-9_-]/gi, '_')}${extension}`;
+                    
+                    document.body.appendChild(anchor);
+                    anchor.click();
+                    
+                    document.body.removeChild(anchor);
+                    URL.revokeObjectURL(blobUrl);
+                } catch (error) {
+                    console.error("Download failed:", error);
+                    window.open(url, '_blank');
+                } finally {
+                    downloadBtn.textContent = "DL";
+                    downloadBtn.style.pointerEvents = "auto";
+                }
             }
         });
 
@@ -648,6 +722,10 @@
                 currentSrcNode.stop(0);
                 currentSrcNode.disconnect?.();
             }
+            if (nativeAudio) {
+                nativeAudio.pause();
+                nativeAudio = null;
+            }
             if (currentPlayBtn) currentPlayBtn.classList.remove('playing');
             currentSrcNode = null;
             currentKey = null;
@@ -655,40 +733,58 @@
         }
 
         function nextUrlFor(item) {
+            if (item.url) return item.url;
+
             const idx = ((playIndex[item.name] || 0) % item.files.length);
             playIndex[item.name] = idx + 1;
             return baseToUrl(item.files[idx]);
         }
 
         async function playKey(key, btn) {
-            const item = state.itemsByName.get(key);
+            let item = state.itemsByName.get(key);
+            if (!item && secretItemsCache) {
+                item = secretItemsCache.find(it => it.name === key);
+            }
             if (!item || item.files_missing) return;
 
             const url = nextUrlFor(item);
-            if (!url || !inManifest(url)) return;
+            if (!url || (!item.url && !inManifest(url))) return;
 
-            await unlockAudio();
             stopCurrent();
 
             const card = document.querySelector(`.card[data-key="${CSS.escape(key)}"]`);
             const rate = parseFloat(card.querySelector('.pitch').value || '1.0');
 
-            try {
-                const buf = await getBuffer(url);
-                const src = webCtx.createBufferSource();
-                src.buffer = buf;
-                src.playbackRate.value = rate;
-                src.connect(webCtx.destination);
+            currentKey = key;
+            currentPlayBtn = btn;
+            btn.classList.add('playing');
 
-                currentSrcNode = src;
-                currentKey = key;
-                currentPlayBtn = btn;
-                btn.classList.add('playing');
+            if (item.url) {
+                try {
+                    nativeAudio = new Audio(url);
+                    nativeAudio.playbackRate = rate;
+                    nativeAudio.onended = () => stopCurrent();
+                    nativeAudio.onerror = () => stopCurrent();
+                    await nativeAudio.play();
+                } catch (err) {
+                    console.error("Audio playback restricted by browser context:", err);
+                    stopCurrent();
+                }
+            } else {
+                await unlockAudio();
+                try {
+                    const buf = await getBuffer(url);
+                    const src = webCtx.createBufferSource();
+                    src.buffer = buf;
+                    src.playbackRate.value = rate;
+                    src.connect(webCtx.destination);
 
-                src.onended = () => stopCurrent();
-                src.start(0);
-            } catch (err) {
-                stopCurrent();
+                    currentSrcNode = src;
+                    src.onended = () => stopCurrent();
+                    src.start(0);
+                } catch (err) {
+                    stopCurrent();
+                }
             }
         }
 

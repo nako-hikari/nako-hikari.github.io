@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Device & Femboy Test</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #text {
+            font-family: monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            word-break: break-all;
+            text-align: left;
+            color: rgba(0, 119, 255, 0.03);
+            width: 100%;
+        }
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            gap: 15px;
+        }
+        button {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-family: sans-serif;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s;
+        }
+        button:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        #result {
+            font-family: sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333333;
+            min-height: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Device Info at the top, blue with 3% opacity -->
+    <div id="text">Loading...</div>
+
+    <!-- Button & Result in the middle -->
+    <div class="center-container">
+        <button id="femboyBtn" onclick="testFemboy()">Seberapa Femboy kamu?</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Reverse alphabet logic for user agent
+        const userAgent = navigator.userAgent;
+        let resultText = '';
+
+        for (let i = 0; i < userAgent.length; i++) {
+            let char = userAgent[i];
+            let code = char.charCodeAt(0);
+
+            // A-Z (65-90)
+            if (code >= 65 && code <= 90) {
+                resultText += String.fromCharCode(155 - code);
+            }
+            // a-z (97-122)
+            else if (code >= 97 && code <= 122) {
+                resultText += String.fromCharCode(219 - code);
+            }
+            // Everything else stays the same
+            else {
+                resultText += char;
+            }
+        }
+
+        document.getElementById("text").innerText = resultText;
+
+        // Femboy percentage randomizer logic
+        function testFemboy() {
+            const btn = document.getElementById("femboyBtn");
+            const resultDiv = document.getElementById("result");
+            
+            // Disable the button immediately on press so it can only be clicked once
+            btn.disabled = true;
+
+            const startTime = Date.now();
+            const duration = 1000; // 1 second
+
+            function spin() {
+                const elapsed = Date.now() - startTime;
+
+                if (elapsed < duration) {
+                    // Flash random numbers during the 1 second
+                    const tempRandom = (Math.random() * 100).toFixed(1);
+                    resultDiv.innerText = tempRandom + "%";
+                    requestAnimationFrame(spin);
+                } else {
+                    // Always stop between 0 - 5% (with 1 decimal place)
+                    const finalRandom = (Math.random() * 0).toFixed(1);
+                    resultDiv.innerText = finalRandom + "%";
+                }
+            }
+
+            requestAnimationFrame(spin);
+        }
+    </script>
+
+</body>
+</html>
